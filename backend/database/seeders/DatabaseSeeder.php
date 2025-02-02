@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('Admin123!@#'),
             'email_verified_at' => Carbon::now(),
+            'is_admin' => true,
         ]);
     }
 }
