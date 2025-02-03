@@ -12,14 +12,22 @@ class DiaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $diaries = Diary::where('user_id', auth()->id())->get();  // Only show diaries for the authenticated user
+        $countPerPage = $request->get('per_page', 1);
+
+        $diaries = Diary::where('user_id', auth()->id())->paginate($countPerPage);  // Only show diaries for the authenticated user
+
+        // Return the paginated data as JSON
         return response()->json([
-            'data' => $diaries,
+            'data' => $diaries->items(), // Get the actual items
             'pagination' => [
-                'total' => 10,
-                'current_page' => 1
+                'total' => $diaries->total(), // Total number of records
+                'current_page' => $diaries->currentPage(), // Current page
+                'per_page' => $diaries->perPage(), // Items per page
+                'last_page' => $diaries->lastPage(), // Last page
+                'next_page_url' => $diaries->nextPageUrl(), // URL for the next page
+                'prev_page_url' => $diaries->previousPageUrl(), // URL for the previous page
             ]
         ]);
     }

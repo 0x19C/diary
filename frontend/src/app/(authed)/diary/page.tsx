@@ -4,11 +4,11 @@ import React, { useEffect } from "react";
 import { useDiaryStore } from "@/store/diary";
 
 const Page = () => {
-  const { diaries, listDiary } = useDiaryStore();
+  const { current_page, diaries, listDiary } = useDiaryStore();
 
   useEffect(() => {
-    listDiary();
-  }, [listDiary]);
+    listDiary(current_page);
+  }, [current_page, listDiary]);
   return <div>{diaries.map(({ summary }) => summary)}</div>;
 };
 
