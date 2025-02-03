@@ -9,19 +9,19 @@ use Carbon\Carbon;
 
 class DiaryController extends Controller
 {
-    // Ensure the user is authenticated for all actions
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $diaries = Diary::where('user_id', auth()->id())->get();  // Only show diaries for the authenticated user
-        return response()->json($diaries);
+        return response()->json([
+            'data' => $diaries,
+            'pagination' => [
+                'total' => 10,
+                'current_page' => 1
+            ]
+        ]);
     }
 
     /**
@@ -39,7 +39,7 @@ class DiaryController extends Controller
     {
         $request->validate([
             'summary' => 'required',
-            'file' => 'nullable|file|mimes:jpeg,png|max:10240', // Adjust mime types and max size as needed
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,bmp,tiff,webp,svg|max:10240', // Allow multiple image types
         ]);
 
         // Handle file upload if present
@@ -93,9 +93,9 @@ class DiaryController extends Controller
         }
 
         $request->validate([
-            'summary' => 'nullable|string', // Assuming summary is optional in update
-            'file' => 'nullable|file|mimes:jpeg,png|max:10240', // Adjust mime types and max size as needed
-        ]);
+            'summary' => 'required',
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,bmp,tiff,webp,svg|max:10240', // Allow multiple image types
+        ]);        
 
         $filePath = $diary->file_path; // Keep the existing file path if no new file is uploaded
 
