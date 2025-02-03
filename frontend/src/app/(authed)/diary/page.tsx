@@ -1,45 +1,35 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDiaryStore } from "@/store/diary";
 import { DashboardPagination } from "@/components/pagination";
 
 const Page = () => {
-  const {
-    total,
-    current_page,
-    diaries,
-    listDiary
-  } = useDiaryStore(s => s)
-  const DefaultPaginationParams = {
-    total: 0,
-    page: 1,
-    per_page: 10
-  }
-  const [paginationParams, setPaginationParams] = useState(DefaultPaginationParams);
+  const { last_page, current_page, per_page, diaries, listDiary } = useDiaryStore();
 
   useEffect(() => {
-    listDiary(current_page);
-  }, [current_page, listDiary]);
-  
+    listDiary(current_page, per_page);
+  }, [current_page, per_page, listDiary]);
+
   if (!diaries) return <div>loading...</div>;
   return (
     <>
       <section className="relative p-16 mt-2">
         <DashboardPagination
           locale="ja"
-          totalCount={total}
+          totalCount={last_page}
           currentPage={current_page}
           itemsPerPage={1}
-          onSelectPage={(page) => setPaginationParams({...paginationParams, page})}
-          onSelectPerPage={(per_page) => setPaginationParams({...paginationParams, per_page})}
+          onSelectPage={(page) =>
+            listDiary(page, per_page)
+          }
+          onSelectPerPage={(per) =>
+            listDiary(1, per)
+          }
         />
-        
-        
       </section>
     </>
   );
-
 
   return <div>{diaries.map(({ summary }) => summary)}</div>;
 };
