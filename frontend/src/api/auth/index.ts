@@ -1,48 +1,21 @@
-import Axios, { AxiosResponse } from "axios";
-import { API_SERVER_URL } from "@/api/constants";
+import {
+  axios,
+  SERVER_ERROR,
+  getCSRFToken,
+  type COMMON_RESPONSE,
+} from "@/api/common";
+import { AxiosHeaders } from "axios";
 
-const axios = Axios.create({
-  baseURL: API_SERVER_URL,
-  headers: {
-    "X-Requested-With": "XMLHttpRequest",
-  },
-  withCredentials: true,
-  withXSRFToken: true,
-});
-
-const SERVER_ERROR = {
-  error: "server_error",
-  message: "サーバエラー",
-};
-
-const getCSRFToken = async () => {
-  return new Promise<boolean>((resolve, _) => {
-    axios
-      .get("/sanctum/csrf-cookie")
-      .then((_) => {
-        resolve(true);
-      })
-      .catch((_) => {
-        resolve(false);
-      });
-  });
-};
-
-export const loginWithCredential = async (params: {
-  email: string;
-  password: string;
-}) => {
+export const loginWithCredential = async (formData: FormData) => {
   await getCSRFToken();
-  const formData = new FormData();
-  formData.append("email", params.email);
-  formData.append("password", params.password);
-  formData.append("remember", "1");
-
-  return new Promise<any>((resolve, reject) => {
+  return new Promise<COMMON_RESPONSE<unknown>>((resolve, reject) => {
     axios
       .post("/login", formData)
-      .then((res: AxiosResponse) => {
-        resolve(res.data);
+      .then((_) => {
+        resolve({
+          data: null,
+          message: "Login Success!",
+        });
       })
       .catch((e) => {
         try {
@@ -55,22 +28,16 @@ export const loginWithCredential = async (params: {
   });
 };
 
-export const registerWithCredential = async (params: {
-  name: string;
-  email: string;
-  password: string;
-}) => {
+export const registerWithCredential = async (formData: FormData) => {
   await getCSRFToken();
-  const formData = new FormData();
-  formData.append("name", params.name);
-  formData.append("email", params.email);
-  formData.append("password", params.password);
-
-  return new Promise<any>((resolve, reject) => {
+  return new Promise<COMMON_RESPONSE<unknown>>((resolve, reject) => {
     axios
       .post("/register", formData)
-      .then((res: AxiosResponse) => {
-        resolve(res.data);
+      .then((_) => {
+        resolve({
+          data: null,
+          message: "Successfully Registered!",
+        });
       })
       .catch((e) => {
         try {
@@ -83,14 +50,31 @@ export const registerWithCredential = async (params: {
   });
 };
 
-export const verifyToken = async () => {
-  return new Promise<any>((resolve, reject) => {
+export const whoAmI = async (headers: AxiosHeaders) => {
+  await getCSRFToken();
+  return new Promise<COMMON_RESPONSE<unknown>>((resolve, reject) => {
     axios
-      .get("/api/user")
-      .then((res: AxiosResponse) => {
-        resolve(res.data);
+      .get("/api/user", {
+        headers
       })
+      .then(
+        (res: {
+          data: {
+            id: string;
+            username: string;
+            email: string;
+            is_admin: boolean;
+          };
+        }) => {
+          console.log({res})
+          resolve({
+            data: res.data,
+            message: "Successfully Registered!",
+          });
+        }
+      )
       .catch((e) => {
+        console.log({e})
         try {
           const { data } = e.response;
           reject(data);

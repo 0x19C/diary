@@ -1,33 +1,34 @@
-'use client';
+"use client";
 
+import ImageUploadInput from "@/components/input/imageUploadInput";
 import { LoadingOverlay } from "@/components/overlay";
-import { useAuthStore } from "@/store/auth";
+import { useDiaryStore } from "@/store/diary";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 
 const Page: React.FC = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [summary, setSummary] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const { isLoading, actionLoginWithCredential } = useAuthStore();
+  const { isLoading, createDiary } = useDiaryStore();
 
-  const handleLoginButtonClicked = () => {
-
+  const handleCreateDiaryButtonClick = () => {
     const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", pwd);
+    formData.append("summary", summary);
+    if (files.length) {
+      formData.append(`file`, files[0]);
+    }
 
-    actionLoginWithCredential(formData)
+    createDiary(formData)
       .then((res) => {
         setError("");
         setMessage(res.message);
-
         setTimeout(() => {
-          router.push("/");
-        }, 500);
+          router.push("/diary");
+        }, 1500);
       })
       .catch((e) => {
         setMessage("");
@@ -41,29 +42,21 @@ const Page: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>Email</td>
+              <td>Summary</td>
               <td>
-                <input
-                  id="email"
-                  type="email"
+                <textarea
+                  id="summary"
                   placeholder=""
                   className="p-2 border border-gray-300 focus:outline-none w-full my-2"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
                 />
               </td>
             </tr>
             <tr>
-              <td>パスワード</td>
+              <td>Image</td>
               <td>
-                <input
-                  id="pwd"
-                  type="password"
-                  placeholder=""
-                  className="p-2 border border-gray-300 focus:outline-none w-full my-2"
-                  value={pwd}
-                  onChange={(e) => setPwd(e.target.value)}
-                />
+                <ImageUploadInput files={files} onChange={setFiles} />
               </td>
             </tr>
           </tbody>
@@ -76,9 +69,9 @@ const Page: React.FC = () => {
       <div className="my-2 w-full">
         <button
           className="w-full bg-green-default text-white py-2"
-          onClick={handleLoginButtonClicked}
+          onClick={handleCreateDiaryButtonClick}
         >
-          ログイン
+          Create
         </button>
       </div>
       <LoadingOverlay isOpen={isLoading} />
