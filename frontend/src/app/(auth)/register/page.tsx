@@ -17,15 +17,11 @@ const Page: React.FC = () => {
   const { isLoading, actionRegisterWithCredential } = useAuthStore();
 
   const handleRegisterButtonClicked = () => {
-    if (pwd !== cpwd) {
-      setMessage("");
-      setError("Confirm password is not matched.");
-      return;
-    }
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", pwd);
+    formData.append("password_confirmation", cpwd);
     actionRegisterWithCredential(formData)
       .then((res) => {
         setError("");

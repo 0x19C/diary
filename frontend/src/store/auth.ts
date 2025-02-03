@@ -8,7 +8,10 @@ export interface IManagerAuthState {
   isLoggedIn: boolean;
   error: IStoreError;
   actionLoginWithCredential(formData: FormData): Promise<{ message: string }>;
-  actionRegisterWithCredential(formData: FormData): Promise<{ message: string }>;
+  actionRegisterWithCredential(
+    formData: FormData
+  ): Promise<{ message: string }>;
+  actionLogout(): Promise<{ message: string }>;
 }
 
 export const useAuthStore = create<IManagerAuthState>((set) => ({
@@ -24,7 +27,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
             isLoggedIn: true,
           });
           resolve({
-            message: res.message
+            message: res.message,
           });
         })
         .catch((e) => {
@@ -41,6 +44,23 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
         .then((res) => {
           set({
             isLoggedIn: true,
+          });
+          resolve(res);
+        })
+        .catch((e) => {
+          reject(e);
+        })
+        .finally(() => {
+          set({ isLoading: false });
+        });
+    }),
+  actionLogout: async () =>
+    new Promise((resolve, reject) => {
+      set({ isLoading: true });
+      API.logout()
+        .then((res) => {
+          set({
+            isLoggedIn: false,
           });
           resolve(res);
         })

@@ -50,6 +50,28 @@ export const registerWithCredential = async (formData: FormData) => {
   });
 };
 
+export const logout = async () => {
+  await getCSRFToken();
+  return new Promise<COMMON_RESPONSE<unknown>>((resolve, reject) => {
+    axios
+      .post("/logout")
+      .then((_) => {
+        resolve({
+          data: null,
+          message: "Successfully Logged out!",
+        });
+      })
+      .catch((e) => {
+        try {
+          const { data } = e.response;
+          reject(data);
+        } catch (_) {
+          reject(SERVER_ERROR);
+        }
+      });
+  });
+};
+
 export const whoAmI = async (headers: AxiosHeaders) => {
   await getCSRFToken();
   return new Promise<COMMON_RESPONSE<unknown>>((resolve, reject) => {
