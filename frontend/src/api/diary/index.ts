@@ -21,7 +21,7 @@ export const diaryCreation = async (formData: FormData) => {
   });
 };
 
-export const diaryListing = async (page: number = 1) => {
+export const diaryListing = async (page: number = 1, per_page: number = 5) => {
   await getCSRFToken();
 
   return new Promise<{
@@ -36,7 +36,7 @@ export const diaryListing = async (page: number = 1) => {
     };
   }>((resolve, reject) => {
     axios
-      .get(`/api/diaries?page=${page}`)
+      .get(`/api/diaries?page=${page}&per_page=${per_page}`)
       .then((res: AxiosResponse) => {
         resolve(res.data);
       })

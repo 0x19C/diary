@@ -15,7 +15,7 @@ export interface IDiaryStore {
   prev_page_url: string | null;
   error: IStoreError;
   createDiary(formData: FormData): Promise<{ message: string }>;
-  listDiary(page: number): Promise<{ message: string }>;
+  listDiary(page: number, per_page: number): Promise<{ message: string }>;
   updateDiary(id: string, formData: FormData): Promise<{ message: string }>;
 }
 
@@ -24,7 +24,7 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
   diaries: [],
   total: 0,
   current_page: 1,
-  per_page: 5,
+  per_page: 1,
   last_page: 0,
   next_page_url: null,
   prev_page_url: null,
@@ -44,10 +44,10 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
           set({ isLoading: false });
         });
     }),
-  listDiary: async (page: number = 1) =>
+  listDiary: async (page: number = 1, per_page: number = 5) =>
     new Promise((resolve, reject) => {
       set({ isLoading: true });
-      API.diaryListing(page)
+      API.diaryListing(page, per_page)
         .then((res) => {
           set({
             diaries: res.data,
