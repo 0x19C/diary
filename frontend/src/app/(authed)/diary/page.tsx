@@ -5,10 +5,11 @@ import { useDiaryStore } from "@/store/diary";
 import { DashboardPagination } from "@/components/pagination";
 
 const Page = () => {
-  const { diaries, listDiary } = useDiaryStore();
   const {
     total,
-    current_page
+    current_page,
+    diaries,
+    listDiary
   } = useDiaryStore(s => s)
   const DefaultPaginationParams = {
     total: 0,
@@ -18,8 +19,10 @@ const Page = () => {
   const [paginationParams, setPaginationParams] = useState(DefaultPaginationParams);
 
   useEffect(() => {
-    listDiary();
-  }, [listDiary]);
+    listDiary(current_page);
+  }, [current_page, listDiary]);
+  
+  if (!diaries) return <div>loading...</div>;
   return (
     <>
       <section className="relative p-16 mt-2">
@@ -36,6 +39,9 @@ const Page = () => {
       </section>
     </>
   );
+
+
+  return <div>{diaries.map(({ summary }) => summary)}</div>;
 };
 
 export default Page;

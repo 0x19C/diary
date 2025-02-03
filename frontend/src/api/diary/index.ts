@@ -21,18 +21,22 @@ export const diaryCreation = async (formData: FormData) => {
   });
 };
 
-export const diaryListing = async () => {
+export const diaryListing = async (page: number = 1) => {
   await getCSRFToken();
 
   return new Promise<{
-    data: Diary[],
+    data: Diary[];
     pagination: {
-      total: number,
-      current_page: number
-    }
+      total: number;
+      current_page: number;
+      per_page: number;
+      last_page: number;
+      next_page_url: string;
+      prev_page_url: string;
+    };
   }>((resolve, reject) => {
     axios
-      .get("/api/diaries")
+      .get(`/api/diaries?page=${page}`)
       .then((res: AxiosResponse) => {
         resolve(res.data);
       })
