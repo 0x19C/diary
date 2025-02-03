@@ -22,7 +22,11 @@ const Page: React.FC = () => {
       setError("Confirm password is not matched.");
       return;
     }
-    actionRegisterWithCredential(name, email, pwd)
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", pwd);
+    actionRegisterWithCredential(formData)
       .then((res) => {
         setError("");
         setMessage(res.message);

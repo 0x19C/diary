@@ -8,7 +8,7 @@ export interface IManagerAuthState {
   isLoggedIn: boolean;
   error: IStoreError;
   actionLoginWithCredential(formData: FormData): Promise<{ message: string }>;
-  actionRegisterWithCredential(formData: FormData): Promise<unknown>;
+  actionRegisterWithCredential(formData: FormData): Promise<{ message: string }>;
 }
 
 export const useAuthStore = create<IManagerAuthState>((set) => ({
