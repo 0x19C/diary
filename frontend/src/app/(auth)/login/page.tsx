@@ -1,7 +1,10 @@
-'use client';
+"use client";
 
 import { LoadingOverlay } from "@/components/overlay";
 import { useAuthStore } from "@/store/auth";
+import { faArrowRight, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 
@@ -15,7 +18,6 @@ const Page: React.FC = () => {
   const { isLoading, actionLoginWithCredential } = useAuthStore();
 
   const handleLoginButtonClicked = () => {
-
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", pwd);
@@ -78,9 +80,12 @@ const Page: React.FC = () => {
           className="w-full bg-green-default text-white py-2"
           onClick={handleLoginButtonClicked}
         >
-          ログイン
+          ログイン <FontAwesomeIcon icon={faRightToBracket} />
         </button>
       </div>
+      <Link href={"/register"} className="text-center block text-green-default mt-5">
+        Go to Register Page <FontAwesomeIcon icon={faArrowRight} />
+      </Link>
       <LoadingOverlay isOpen={isLoading} />
     </Suspense>
   );

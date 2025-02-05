@@ -19,14 +19,15 @@ export const metadata: Metadata = {
 };
 const HeaderNavs = [
   {
-    label: "diary",
+    label: "Diary",
     link: "/diary",
   },
   {
-    label: "manger_user",
+    label: "User Management",
     link: "/user",
   },
-]
+];
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,9 +38,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ManagerDashboardHeader
-          navs={HeaderNavs}
-        />
+        <ManagerDashboardHeader navs={HeaderNavs} />
         {children}
       </body>
     </html>
