@@ -10,6 +10,8 @@ import 'reactjs-popup/dist/index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode, useState } from "react";
 import clsx from "clsx";
+import { Diary } from "@/api/common";
+import { useDiaryStore } from "@/store/diary";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -40,17 +42,23 @@ const DashboardTableEntry = ({
   onEdit,
   onDuplicate,
   onDelete,
+  index
 }: Readonly<{
-  data: IDataEntry;
+  data: Diary;
   disableClone?: boolean;
   disableDelete?: boolean;
   editable?: boolean;
   onEdit: (data: any) => void;
   onDuplicate: (data: any) => void;
   onDelete: (data: any) => void;
+  index: number;
 }>) => {
-  const { fields } = data;
-
+  // const { fields } = data;
+  console.log(data,'DATA')
+  const { current_page, per_page } = useDiaryStore();
+  
+  const backendUrl = process.env.NEXT_PUBLIC_INTER_BACKEND_API_URL;
+  const fileUrl = `${backendUrl}/storage/${data.file_path}`;
   const handleEditClicked = () => {
     onEdit(data);
   };
@@ -64,50 +72,54 @@ const DashboardTableEntry = ({
   };
 
   return (
-    <tr className="border-t border-gray-default" style={{ background: data.background || 'transparent' }}>
-      {fields.map((_f, j) => (
+    <tr className="border-t border-gray-default" style={{ background:  'transparent' }}>
+      
         <td
-          key={j}
+          key={data.id}
           className={clsx(
-            "p-4 text-sm whitespace-nowrap",
-            _f.width ? `w-${_f.width}` : ""
+            "p-4 text-sm whitespace-nowrap w-24",
           )}
         >
-          <span>{_f.value}</span>
+          <span>{(index+1) + ((current_page - 1 )* per_page)}</span>
         </td>
-      ))}
+        <td
+          key={data.summary}
+          className={clsx(
+            "p-4 text-sm whitespace-nowrap w-64",
+          )}
+        >
+          <span>{data.summary}</span>
+        </td>
+        <td
+          key={data.entry_date}
+          className={clsx(
+            "p-4 text-sm whitespace-nowrap w-24",
+          )}
+        >
+          <span>{data.entry_date}</span>
+        </td>
+        <td
+          key={data.file_path}
+          className={clsx(
+            "p-4 text-sm whitespace-nowrap w-24",
+          )}
+        >
+          {data.file_path ? (
+            <img 
+              src={fileUrl} 
+              alt="Image" 
+              className="w-32 h-32 object-cover rounded" 
+            />
+          ) : (
+            <span>No Image Available</span>
+          )}
+        </td>
       
     </tr>
   );
 };
 
-const SortIcon = ({
-  sorted,
-  direction,
-  field,
-  onChange,
-}: Readonly<{
-  sorted: boolean;
-  field: string;
-  direction?: string;
-  onChange?: (sort_field: string, sort_order: string) => void;
-}>) => {
-  
-  return (
-    <div className="text-xs cursor-pointer" >
-     
-        <div>
-          <div className="-my-2">
-            <FontAwesomeIcon icon={faAngleUp} />
-          </div>
-          <div className="-my-2">
-            <FontAwesomeIcon icon={faAngleDown} />
-          </div>
-        </div>
-      
-    </div>
-  );
-};
+
 
 const ManagerDashboardTable = ({
   header,
@@ -134,7 +146,7 @@ const ManagerDashboardTable = ({
     fill?: boolean;
     sortable?: boolean;
   }[];
-  data: IDataEntry[];
+  data: Diary[];
   pagination?: {
     total: number;
     current_page: number;
@@ -165,23 +177,13 @@ const ManagerDashboardTable = ({
   return (
     <div>
       <div className="text-black-default rounded-lg border border-gray-default max-w-full overflow-x-auto">
-        <table className="min-w-full">
+        <table className="min-w-full table-fixed">
           <thead>
             <tr>
-              {header.map((_, i) => (
-                <th
-                  key={i}
-                  className={clsx("p-4 text-left", {
-                    "w-full": _.fill,
-                  })}
-                >
-                  <div className="text-sm whitespace-nowrap flex items-center gap-2">
-                    <span>{_.label}</span>
-                    
-                  </div>
-                </th>
-              ))}
-              {editable && <th></th>}
+              <th className="p-4 text-left w-[10%]">ID</th>
+              <th className="p-4 text-left w-auto">Summary</th>
+              <th className="p-4 text-left w-[20%]">Entry Date</th>
+              <th className="p-4 text-left w-[20%]">Image</th>
             </tr>
           </thead>
           <tbody>
@@ -189,6 +191,7 @@ const ManagerDashboardTable = ({
               <DashboardTableEntry
                 key={i}
                 data={_r}
+                index={i}
                 disableClone={disableClone}
                 disableDelete={disableDelete}
                 editable={editable}

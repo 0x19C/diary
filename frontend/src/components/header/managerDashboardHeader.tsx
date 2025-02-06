@@ -28,9 +28,9 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
   const { isLoggedIn, actionLogout } = useAuthStore();
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
+    // if (!isLoggedIn) {
+    //   router.push("/login");
+    // }
   }, [router, isLoggedIn]);
 
   // if (!isLoggedIn) {
