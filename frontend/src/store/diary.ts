@@ -16,6 +16,7 @@ export interface IDiaryStore {
   error: IStoreError;
   createDiary(formData: FormData): Promise<{ message: string }>;
   listDiary(page: number, per_page: number): Promise<{ message: string }>;
+  removeDiary(id: string): Promise<{ message: string }>;
   updateDiary(id: string, formData: FormData): Promise<{ message: string }>;
 }
 
@@ -29,57 +30,76 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
   next_page_url: null,
   prev_page_url: null,
   error: null,
-  createDiary: async (formData: FormData) =>
-    new Promise((resolve, reject) => {
-      set({ isLoading: true });
-      API.diaryCreation(formData)
-        .then((res) => {
-          set((state) => ({ diaries: [...state.diaries, res] }));
-          resolve({ message: "Successfully Created!" });
-        })
-        .catch((e) => {
-          reject(e);
-        })
-        .finally(() => {
-          set({ isLoading: false });
-        });
-    }),
-  listDiary: async (page: number = 1, per_page: number = 5) =>
-    new Promise((resolve, reject) => {
-      set({ isLoading: true });
-      API.diaryListing(page, per_page)
-        .then((res) => {
-          set({
-            diaries: res.data,
-            total: res.pagination.total,
-            current_page: res.pagination.current_page,
-            per_page: res.pagination.per_page,
-            last_page: res.pagination.last_page,
-            next_page_url: res.pagination.next_page_url,
-            prev_page_url: res.pagination.prev_page_url,
-          });
-          resolve({ message: "Successfully Listed!" });
-        })
-        .catch((e) => {
-          reject(e);
-        })
-        .finally(() => {
-          set({ isLoading: false });
-        });
-    }),
-  updateDiary: async (id: string, formData: FormData) =>
-    new Promise((resolve, reject) => {
-      set({ isLoading: true });
-      API.diaryUpdating(id, formData)
-        .then((res) => {
-          set((state) => ({ diaries: [...state.diaries, res] }));
-          resolve({ message: "Successfully Updated!" });
-        })
-        .catch((e) => {
-          reject(e);
-        })
-        .finally(() => {
-          set({ isLoading: false });
-        });
-    }),
+
+  // Create Diary
+  createDiary: async (formData: FormData) => {
+    set({ isLoading: true });
+    try {
+      const res = await API.diaryCreation(formData);
+      set((state) => ({
+        diaries: [...state.diaries, res],
+      }));
+      return { message: "Successfully Created!" };
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // List Diaries
+  listDiary: async (page: number = 1, per_page: number = 5) => {
+    set({ isLoading: true });
+    try {
+      const res = await API.diaryListing(page, per_page);
+      set({
+        diaries: res.data,
+        total: res.pagination.total,
+        current_page: res.pagination.current_page,
+        per_page: res.pagination.per_page,
+        last_page: res.pagination.last_page,
+        next_page_url: res.pagination.next_page_url,
+        prev_page_url: res.pagination.prev_page_url,
+      });
+      return { message: "Successfully Listed!" };
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // Remove Diary
+  removeDiary: async (id: string) => {
+    set({ isLoading: true });
+    try {
+      await API.diaryDeleting(id);
+      set((state) => ({
+        diaries: state.diaries.filter((diary) => diary.id !== id),
+      }));
+      return { message: "Successfully Deleted!" };
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // Update Diary
+  updateDiary: async (id: string, formData: FormData) => {
+    set({ isLoading: true });
+    try {
+      const res = await API.diaryUpdating(id, formData);
+      set((state) => ({
+        diaries: state.diaries.map((diary) =>
+          diary.id === id ? res : diary
+        ),
+      }));
+      return { message: "Successfully Updated!" };
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 }));

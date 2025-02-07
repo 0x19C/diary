@@ -5,10 +5,12 @@ import { useDiaryStore } from "@/store/diary";
 import { DashboardPagination } from "@/components/pagination";
 import ManagerDashboardTable from "@/components/table/dashboardTable";
 import { useRouter } from "next/navigation";
+import { Diary } from "@/api/common";
+import { diaryDeleting } from "@/api/diary";
 
 
 const Page = () => {
-  const { last_page, current_page, per_page, diaries, listDiary } = useDiaryStore();
+  const { last_page, current_page, per_page, diaries, listDiary, removeDiary } = useDiaryStore();
   const Header = [
     { field: "userid", label: "ID", sortable: true },
     { field: "is_open", label: "公 開", sortable: true },
@@ -20,6 +22,19 @@ const Page = () => {
   useEffect(() => {
     listDiary(current_page, per_page);
   }, [current_page, per_page, listDiary]);
+
+  const handleDelete  = async (diary: Diary) => {
+    try {
+      await removeDiary(diary.id);
+    } catch(error) {
+      console.error(error);
+    }
+    console.log('delete page', diary)
+  }
+
+  const handleEdit = (diary: Diary) => {
+    console.log(diary,'EEE')
+  }
 
   if (!diaries) return <div>loading...</div>;
   return (
@@ -42,7 +57,7 @@ const Page = () => {
             className="bg-green-default text-white px-4 py-3 rounded my-2 hover:bg-green-700 transition "
             onClick={() => router.push('/diary/new')}
           >
-            Create
+            新規作成
           </button>
         </div>
         
@@ -52,6 +67,8 @@ const Page = () => {
           data={diaries}
           sort_field=""
           sort_order=""
+          onDelete={handleDelete}
+          onEdit={handleEdit}
         />
 
       </section>

@@ -3,6 +3,10 @@
 import {
   faAngleDown,
   faAngleUp,
+  faEdit,
+  faPencil,
+  faTrash,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -12,6 +16,7 @@ import React, { ReactNode, useState } from "react";
 import clsx from "clsx";
 import { Diary } from "@/api/common";
 import { useDiaryStore } from "@/store/diary";
+import { diaryDeleting } from "@/api/diary";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -60,6 +65,7 @@ const DashboardTableEntry = ({
   const backendUrl = process.env.NEXT_PUBLIC_INTER_BACKEND_API_URL;
   const fileUrl = `${backendUrl}/storage/${data.file_path}`;
   const handleEditClicked = () => {
+    console.log(data);
     onEdit(data);
   };
 
@@ -67,7 +73,14 @@ const DashboardTableEntry = ({
     onDuplicate(data);
   };
 
-  const handleDeleteClicked = () => {
+  const handleDeleteClicked = async() => {
+    // try {
+    //   const response = await diaryDeleting(data.id);
+    //   console.log(response);
+
+    // } catch (error) {
+    //   console.log(error);
+    // }
     onDelete(data);
   };
 
@@ -113,6 +126,29 @@ const DashboardTableEntry = ({
           ) : (
             <span>No Image Available</span>
           )}
+        </td>
+        <td
+          className={clsx(
+            "p-4 text-sm whitespace-nowrap w-24",
+          )}
+        >
+          <div className="flex gap-2">
+            <button
+              onClick={handleEditClicked}
+              className="text-blue-600 hover:text-blue-800"
+              aria-label="Edit"
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </button>
+            <button
+              onClick={handleDeleteClicked}
+              className="text-red-600 hover:text-red-800"
+              aria-label="Delete"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+          </div>
+          
         </td>
       
     </tr>
@@ -171,7 +207,9 @@ const ManagerDashboardTable = ({
   };
 
   const handleDelete = (data: any) => {
+    console.log('delete', data)
     onDelete && onDelete(data);
+    
   };
 
   return (

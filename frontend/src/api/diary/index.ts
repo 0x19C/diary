@@ -90,3 +90,22 @@ export const diaryUpdating = async (id: string, formData: FormData) => {
       });
   });
 };
+
+export const diaryDeleting = async (id: string) => {
+  await getCSRFToken();
+  return new Promise<Diary>((resolve, reject) => {
+    axios
+    .delete(`/api/diaries/${id}`)
+    .then((res: AxiosResponse) => {
+      resolve(res.data);
+    })
+    .catch((e) => {
+      try {
+        const { data } = e.response;
+        reject(data);
+      } catch (_) {
+        reject(SERVER_ERROR);
+      }
+    })
+  })
+}
