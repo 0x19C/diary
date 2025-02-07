@@ -18,6 +18,7 @@ export interface IDiaryStore {
   listDiary(page: number, per_page: number): Promise<{ message: string }>;
   removeDiary(id: string): Promise<{ message: string }>;
   updateDiary(id: string, formData: FormData): Promise<{ message: string }>;
+  getDiaryById(id: string): Promise<Diary>;
 }
 
 export const useDiaryStore = create<IDiaryStore>((set) => ({
@@ -102,4 +103,16 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
       set({ isLoading: false });
     }
   },
+
+getDiaryById: async (id: string) => {
+  set({isLoading : true});
+  try {
+    const res = await API.diaryDetailing(id);
+    return res;
+  } catch (error) {
+    return Promise.reject(error);
+  } finally {
+    set({ isLoading: false});
+  }
+}
 }));

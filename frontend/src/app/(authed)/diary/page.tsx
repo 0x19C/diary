@@ -34,6 +34,7 @@ const Page = () => {
 
   const handleEdit = (diary: Diary) => {
     console.log(diary,'EEE')
+    router.push(`/diary/edit/${diary.id}`)
   }
 
   if (!diaries) return <div>loading...</div>;
