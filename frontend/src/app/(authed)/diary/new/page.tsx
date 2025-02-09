@@ -2,9 +2,10 @@
 
 import ImageUploadInput from "@/components/input/imageUploadInput";
 import { LoadingOverlay } from "@/components/overlay";
+import { useAuthStore } from "@/store/auth";
 import { useDiaryStore } from "@/store/diary";
 import { useRouter } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useActionState, useState } from "react";
 
 const Page: React.FC = () => {
   const router = useRouter();
@@ -14,7 +15,8 @@ const Page: React.FC = () => {
   const [error, setError] = useState("");
 
   const { isLoading, createDiary } = useDiaryStore();
-
+  const { actionWhoAmICredential } = useAuthStore();
+  actionWhoAmICredential();
   const handleCreateDiaryButtonClick = () => {
     const formData = new FormData();
     formData.append("summary", summary);

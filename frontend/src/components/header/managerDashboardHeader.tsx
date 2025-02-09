@@ -13,8 +13,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 interface ManagerHeaderProps {
-  navs: { label: string; link: string }[];
+  navs: { label: string; link: string, admin: boolean }[];
 }
+
 
 const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
   const pathname = usePathname();
@@ -25,17 +26,10 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const { isLoggedIn, actionLogout } = useAuthStore();
-
-  useEffect(() => {
-    // if (!isLoggedIn) {
-    //   router.push("/login");
-    // }
-  }, [router, isLoggedIn]);
-
-  // if (!isLoggedIn) {
-  //   return <></>;
-  // }
+  const { isLoggedIn, actionLogout, isAdmin } = useAuthStore();
+  const filteredNavs = isLoggedIn
+  ? navs.filter(nav => isAdmin || !nav.admin)
+  : [];
 
   return (
     <nav className="bg-green-600">
@@ -82,14 +76,15 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
 
           <div className="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start">
             <Link
-              href={"/diary"}
-              className="flex-shrink-0 text-gray-200 hover:text-white"
-            >
-              <FontAwesomeIcon icon={faBook} size="2xl" />
+                href={"/diary"}
+                className="flex-shrink-0 text-gray-200 hover:text-white"
+              >
+                <FontAwesomeIcon icon={faBook} size="2xl" />
             </Link>
+            
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                {navs.map((nav, index) => (
+                {filteredNavs.map((nav, index) => (
                   <Link
                     key={index}
                     href={nav.link}
@@ -109,7 +104,7 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <Link
-              href={"/user"}
+              href={"/profile"}
               className="mr-3 p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
             >
               <FontAwesomeIcon icon={faUser} />

@@ -1,11 +1,7 @@
 "use client";
 
 import {
-  faAngleDown,
-  faAngleUp,
   faEdit,
-  faPencil,
-  faTrash,
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from 'reactjs-popup';
@@ -16,7 +12,6 @@ import React, { ReactNode, useState } from "react";
 import clsx from "clsx";
 import { Diary } from "@/api/common";
 import { useDiaryStore } from "@/store/diary";
-import { diaryDeleting } from "@/api/diary";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -41,11 +36,7 @@ export const EditOption: React.FC<{ children: React.ReactNode }> = ({ children }
 
 const DashboardTableEntry = ({
   data,
-  editable = true,
-  disableClone = false,
-  disableDelete = false,
   onEdit,
-  onDuplicate,
   onDelete,
   index
 }: Readonly<{
@@ -53,9 +44,8 @@ const DashboardTableEntry = ({
   disableClone?: boolean;
   disableDelete?: boolean;
   editable?: boolean;
-  onEdit: (data: any) => void;
-  onDuplicate: (data: any) => void;
-  onDelete: (data: any) => void;
+  onEdit: (data: Diary) => void;
+  onDelete: (data: Diary) => void;
   index: number;
 }>) => {
   // const { fields } = data;
@@ -69,9 +59,7 @@ const DashboardTableEntry = ({
     onEdit(data);
   };
 
-  const handleDuplicateClicked = () => {
-    onDuplicate(data);
-  };
+  
 
   const handleDeleteClicked = async() => {
     // try {
@@ -158,20 +146,12 @@ const DashboardTableEntry = ({
 
 
 const ManagerDashboardTable = ({
-  header,
   data,
   disableClone = false,
   disableDelete = false,
-  pagination,
   editable = true,
   onEdit,
-  onDuplicate,
   onDelete,
-  onSelectPage,
-  onSelectPerPage,
-  sort_field,
-  sort_order,
-  onSortChanged,
 }: Readonly<{
   editable?: boolean;
   disableClone?: boolean;
@@ -191,25 +171,22 @@ const ManagerDashboardTable = ({
   sort_field?: string;
   sort_order?: string;
 
-  onEdit?: (data: any) => void;
-  onDuplicate?: (data: any) => void;
-  onDelete?: (data: any) => void;
+  onEdit?: (data: Diary) => void;
+  onDelete?: (data: Diary) => void;
   onSelectPage?: (page: number) => void;
   onSelectPerPage?: (count: number) => void;
   onSortChanged?: (sort_field: string, sort_order: string) => void;
 }>) => {
-  const handleEdit = (data: any) => {
+  const handleEdit = (data: Diary) => {
     onEdit && onEdit(data);
   };
 
-  const handleDuplicate = (data: any) => {
-    onDuplicate && onDuplicate(data);
-  };
 
-  const handleDelete = (data: any) => {
+
+  const handleDelete = (data: Diary) => {
     console.log('delete', data)
     onDelete && onDelete(data);
-    
+
   };
 
   return (
@@ -234,7 +211,6 @@ const ManagerDashboardTable = ({
                 disableDelete={disableDelete}
                 editable={editable}
                 onEdit={handleEdit}
-                onDuplicate={handleDuplicate}
                 onDelete={handleDelete}
               />
             ))}

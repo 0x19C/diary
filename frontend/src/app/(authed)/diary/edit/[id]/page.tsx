@@ -5,7 +5,7 @@ import { LoadingOverlay } from "@/components/overlay";
 import { useDiaryStore } from "@/store/diary";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter, useSearchParams,usePathname  } from "next/navigation";
+import { useRouter, usePathname  } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 const EditDiaryPage: React.FC = () => {
@@ -35,6 +35,7 @@ const EditDiaryPage: React.FC = () => {
           }
         } catch (e) {
           setError("Failed to load diary details.");
+          console.error(e);
         }
       };
       fetchDiary();

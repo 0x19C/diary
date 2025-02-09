@@ -6,11 +6,13 @@ import { DashboardPagination } from "@/components/pagination";
 import ManagerDashboardTable from "@/components/table/dashboardTable";
 import { useRouter } from "next/navigation";
 import { Diary } from "@/api/common";
-import { diaryDeleting } from "@/api/diary";
+import { useAuthStore } from "@/store/auth";
 
 
 const Page = () => {
   const { last_page, current_page, per_page, diaries, listDiary, removeDiary } = useDiaryStore();
+    const { isLoggedIn } = useAuthStore();
+  
   const Header = [
     { field: "userid", label: "ID", sortable: true },
     { field: "is_open", label: "公 開", sortable: true },
@@ -18,7 +20,13 @@ const Page = () => {
     { field: "agr_officeid", label: "担 当 者 名", sortable: true },
   ]
     const router = useRouter();
-  
+  useEffect(() => {
+    
+    console.log(isLoggedIn,'isLoggedIn')
+    // if(!isLoggedIn) {
+    //   router.push('/login')
+    // }
+  },[isLoggedIn])
   useEffect(() => {
     listDiary(current_page, per_page);
   }, [current_page, per_page, listDiary]);
@@ -29,11 +37,9 @@ const Page = () => {
     } catch(error) {
       console.error(error);
     }
-    console.log('delete page', diary)
   }
 
   const handleEdit = (diary: Diary) => {
-    console.log(diary,'EEE')
     router.push(`/diary/edit/${diary.id}`)
   }
 

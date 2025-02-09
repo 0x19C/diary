@@ -4,6 +4,7 @@ import { LoadingOverlay } from "@/components/overlay";
 import { useAuthStore } from "@/store/auth";
 import { faArrowRight, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AxiosHeaders } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
@@ -15,7 +16,7 @@ const Page: React.FC = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const { isLoading, actionLoginWithCredential } = useAuthStore();
+  const { isAdmin, isLoading, actionLoginWithCredential, actionWhoAmICredential } = useAuthStore();
 
   const handleLoginButtonClicked = () => {
     const formData = new FormData();
@@ -28,7 +29,7 @@ const Page: React.FC = () => {
         setMessage(res.message);
 
         setTimeout(() => {
-          router.push("/");
+          // router.push("/diary");
         }, 500);
       })
       .catch((e) => {
@@ -36,6 +37,21 @@ const Page: React.FC = () => {
         setError(e.message);
       })
       .finally(() => {});
+      actionWhoAmICredential()
+        .then((res) => {
+          setError("");
+          setMessage(res.message);
+          if(isAdmin){
+            router.push("/users");
+          }else {
+            router.push("/diary");
+          }
+        })
+        .catch((e) => {
+          setMessage("");
+          setError(e.message);
+        })
+        .finally(() => {})
   };
   return (
     <Suspense>
