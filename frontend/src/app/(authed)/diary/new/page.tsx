@@ -41,7 +41,7 @@ const Page: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>Summary</td>
+              <td>内容</td>
               <td>
                 <textarea
                   id="summary"
@@ -53,7 +53,7 @@ const Page: React.FC = () => {
               </td>
             </tr>
             <tr>
-              <td>Image</td>
+              <td>画像</td>
               <td>
                 <ImageUploadInput files={files} onChange={setFiles} />
               </td>
@@ -70,7 +70,7 @@ const Page: React.FC = () => {
           className="w-full bg-green-default text-white py-2"
           onClick={handleCreateDiaryButtonClick}
         >
-          Create
+          作成
         </button>
       </div>
       <LoadingOverlay isOpen={isLoading} />

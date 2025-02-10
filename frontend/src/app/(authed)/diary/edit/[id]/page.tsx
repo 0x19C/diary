@@ -70,7 +70,7 @@ const EditDiaryPage: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>Summary</td>
+              <td>内容</td>
               <td>
                 <textarea
                   id="summary"
@@ -82,7 +82,7 @@ const EditDiaryPage: React.FC = () => {
               </td>
             </tr>
             <tr>
-              <td>Image</td>
+              <td>画像</td>
               
               <td>
               {existingFileUrl && (
