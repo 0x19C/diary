@@ -90,6 +90,9 @@ WORKDIR /app
 # アプリケーションファイルのコピー
 COPY ./backend .
 
+# Ensure that the permissions of the app directory are set correctly
+RUN chown -R www-data:www-data /app && chmod -R 755 /app
+
 # Composerの依存関係インストール
 RUN composer install --ignore-platform-req=ext-gd
 
