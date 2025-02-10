@@ -1,12 +1,7 @@
 import Axios from "axios";
 
-const API_SERVER_URL =
-  typeof window === "undefined"
-    ? process.env.NEXT_PUBLIC_INTER_BACKEND_API_URL
-    : process.env.NEXT_PUBLIC_BACKEND_API_URL;
-
 export const axios = Axios.create({
-  baseURL: API_SERVER_URL,
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
   headers: {
     "X-Requested-With": "XMLHttpRequest",
   },

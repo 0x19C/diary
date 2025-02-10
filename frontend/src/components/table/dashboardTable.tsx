@@ -50,7 +50,7 @@ const DashboardTableEntry = ({
 }>) => {
 
   const { current_page, per_page } = useDiaryStore();
-  const backendUrl = process.env.NEXT_PUBLIC_INTER_BACKEND_API_URL;
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const fileUrl = `${backendUrl}/storage/${data.file_path}`;
   const handleEditClicked = () => {
     onEdit(data);
