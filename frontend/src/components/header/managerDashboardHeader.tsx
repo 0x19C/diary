@@ -84,25 +84,6 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
               >
                 <FontAwesomeIcon icon={faBook} size="2xl" />
             </Link>
-            
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                {filteredNavs.map((nav, index) => (
-                  <Link
-                    key={index}
-                    href={nav.link}
-                    className={clsx(
-                      "rounded-md p-2 text-sm font-medium",
-                      pathname === nav.link
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-300 hover:bg-green-500 hover:text-white"
-                    )}
-                  >
-                    {nav.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">

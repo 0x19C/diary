@@ -40,6 +40,7 @@ export default function RootLayout({
 
   const { actionWhoAmICredential } = useAuthStore();
   useEffect(() => {
+    console.log("Test")
     actionWhoAmICredential();
     
   },[])
