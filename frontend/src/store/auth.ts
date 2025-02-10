@@ -103,6 +103,9 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
           set({isLoading: false})
 
         })
+        .finally(() => {
+          set({isLoading: false});
+        })
         
     })
 }));

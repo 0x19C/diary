@@ -50,7 +50,10 @@ export default function RootLayout({
           router.push("/login");
         }
       }
-    });
+    }).catch(()=> {
+      router.push('/login')
+    })
+    ;
   },[isLoggedIn, router])
   return (
     <html lang="en">

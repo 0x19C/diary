@@ -100,7 +100,7 @@ export const whoAmI = async (headers: AxiosHeaders) => {
         }
       )
       .catch((e) => {
-        console.error({e})
+        
         try {
           const { data } = e.response;
           reject(data);

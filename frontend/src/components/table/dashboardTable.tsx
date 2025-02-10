@@ -76,10 +76,10 @@ const DashboardTableEntry = ({
         <td
           key={data.summary}
           className={clsx(
-            "p-4 text-sm whitespace-nowrap w-64",
+            "p-4 text-sm whitespace-nowrap w-64 ",
           )}
         >
-          <span>{data.summary}</span>
+          <span>{data.summary.length > 10 ? `${data.summary.slice(0,10)}...` : data.summary}</span>
         </td>
         <td
           key={data.entry_date}
