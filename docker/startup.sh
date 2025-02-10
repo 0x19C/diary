@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Run migrations without passing "php" as an argument
-php artisan migrate
+php artisan migrate --force
+php artisan db:seed --force
 
 # Run storage link to public
 php artisan storage:link
