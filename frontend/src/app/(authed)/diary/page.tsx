@@ -6,12 +6,10 @@ import { DashboardPagination } from "@/components/pagination";
 import ManagerDashboardTable from "@/components/table/dashboardTable";
 import { useRouter } from "next/navigation";
 import { Diary } from "@/api/common";
-import { useAuthStore } from "@/store/auth";
 
 
 const Page = () => {
   const { last_page, current_page, per_page, diaries, listDiary, removeDiary } = useDiaryStore();
-    const { isLoggedIn } = useAuthStore();
   
   const Header = [
     { field: "userid", label: "ID", sortable: true },
@@ -20,12 +18,7 @@ const Page = () => {
     { field: "agr_officeid", label: "担 当 者 名", sortable: true },
   ]
     const router = useRouter();
-  useEffect(() => {
-    
-    if(!isLoggedIn) {
-      router.push('/login')
-    }
-  },[isLoggedIn])
+
   useEffect(() => {
     listDiary(current_page, per_page);
   }, [current_page, per_page, listDiary]);

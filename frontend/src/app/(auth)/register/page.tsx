@@ -43,7 +43,7 @@ const Page: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>Name</td>
+              <td>名前</td>
               <td>
                 <input
                   id="name"
@@ -56,7 +56,7 @@ const Page: React.FC = () => {
               </td>
             </tr>
             <tr>
-              <td>Email</td>
+              <td>メール</td>
               <td>
                 <input
                   id="email"

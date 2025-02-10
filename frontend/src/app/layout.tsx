@@ -4,6 +4,7 @@ import "./globals.css";
 import { ManagerDashboardHeader } from "@/components/header";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,12 +35,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const { actionWhoAmICredential } = useAuthStore();
+  const router = useRouter();
+  const {isLoggedIn, actionWhoAmICredential, isAdmin} = useAuthStore();
   useEffect(() => {
-    actionWhoAmICredential();
-    
-  },[])
+    actionWhoAmICredential().then((res) => {
+      if (res.data) {
+        if (isLoggedIn) {
+          if(isAdmin) {
+            router.push('/users');
+          } else {
+            router.push("/diary");
+          }
+        } else {
+          router.push("/login");
+        }
+      }
+    });
+  },[isLoggedIn, router])
   return (
     <html lang="en">
       <body

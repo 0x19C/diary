@@ -102,7 +102,7 @@ const DashboardTableEntry = ({
               className="w-32 h-32 object-cover rounded" 
             />
           ) : (
-            <span>No Image Available</span>
+            <span></span>
           )}
         </td>
         <td
@@ -182,10 +182,10 @@ const ManagerDashboardTable = ({
         <table className="min-w-full table-fixed">
           <thead>
             <tr>
-              <th className="p-4 text-left w-[10%]">ID</th>
-              <th className="p-4 text-left w-auto">Summary</th>
-              <th className="p-4 text-left w-[20%]">Entry Date</th>
-              <th className="p-4 text-left w-[20%]">Image</th>
+              <th className="p-4 text-left w-[10%]">番号</th>
+              <th className="p-4 text-left w-auto">内容</th>
+              <th className="p-4 text-left w-[20%]">作成日</th>
+              <th className="p-4 text-left w-[20%]">添付画像</th>
             </tr>
           </thead>
           <tbody>

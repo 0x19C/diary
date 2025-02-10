@@ -149,9 +149,9 @@ const UserTable = ({
         <table className="min-w-full table-fixed">
           <thead>
             <tr>
-              <th className="p-4 text-left w-[10%]">ID</th>
-              <th className="p-4 text-left w-auto">Name</th>
-              <th className="p-4 text-left w-[20%]">Email</th>
+              <th className="p-4 text-left w-[10%]">番号</th>
+              <th className="p-4 text-left w-auto">名前</th>
+              <th className="p-4 text-left w-[20%]">メール</th>
               <th className="p-4 text-left w-[20%]"></th>
             </tr>
           </thead>

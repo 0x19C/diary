@@ -91,6 +91,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
         .then((res) => {
           set({isLoggedIn: true})
           set({isAdmin: res.data.is_admin})
+          set({isLoading: false})
           resolve({
             message: res.message,
             data: res.data
@@ -98,9 +99,10 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
         })
         .catch((e) => {
           reject(e);
+          set({isLoggedIn: false})
+          set({isLoading: false})
+
         })
-        .finally(() => {
-          set({ isLoading: false });
-        });
+        
     })
 }));

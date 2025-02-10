@@ -58,7 +58,7 @@ const Page: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>Email</td>
+              <td>メール</td>
               <td>
                 <input
                   id="email"
@@ -86,7 +86,7 @@ const Page: React.FC = () => {
           </tbody>
         </table>
         <div className="text-xs">
-          {/* {!!error && <h1 className="text-red-600 my-5">{error}</h1>} */}
+          {!!error && <h1 className="text-red-600 my-5">{error}</h1>}
           {!!message && <h1 className="text-green-default">{message}</h1>}
         </div>
       </div>
@@ -99,7 +99,7 @@ const Page: React.FC = () => {
         </button>
       </div>
       <Link href={"/register"} className="text-center block text-green-default mt-5">
-        Go to Register Page <FontAwesomeIcon icon={faArrowRight} />
+        登録ページへ <FontAwesomeIcon icon={faArrowRight} />
       </Link>
       <LoadingOverlay isOpen={isLoading} />
     </Suspense>

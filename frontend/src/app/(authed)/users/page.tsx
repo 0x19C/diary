@@ -2,9 +2,7 @@
 
 import React, { useEffect } from "react";
 import { DashboardPagination } from "@/components/pagination";
-import { useRouter } from "next/navigation";
 import { User } from "@/api/common";
-import { useAuthStore } from "@/store/auth";
 import { userStore } from "@/store/user";
 import UserTable from "@/components/table/userTable";
 
@@ -12,7 +10,6 @@ import UserTable from "@/components/table/userTable";
 const Page = () => {
   const { last_page, current_page, per_page, users, listUser, removeUser } = userStore();
  
-    const { isLoggedIn } = useAuthStore();
   
   const Header = [
     { field: "userid", label: "ID", sortable: true },
@@ -20,12 +17,7 @@ const Page = () => {
     { field: "farm_name", label: "農 場 名", sortable: true, fill: true },
     { field: "agr_officeid", label: "担 当 者 名", sortable: true },
   ]
-    const router = useRouter();
-  useEffect(() => {
-    if(!isLoggedIn) {
-      router.push('/login')
-    }
-  },[isLoggedIn])
+
   useEffect(() => {
     listUser(current_page, per_page);
   }, [current_page, per_page, listUser]);
