@@ -4,9 +4,8 @@ const Pagination = ({
   locale,
   totalCount = 0,
   currentPage = 1,
-  itemsPerPage = 10,
+  itemsPerPage = 5,
   onSelectPage,
-  onSelectPerPage,
 }: Readonly<{
   locale: 'en' | 'ja';
   totalCount: number;
@@ -95,18 +94,7 @@ const Pagination = ({
             {locale === 'ja' ? '次へ' : 'Next'}
           </button>
         </div>
-        <div>
-          <label className="mr-3">{locale === 'ja' ? '表示件数' : 'Per Page'}</label>
-          <select
-            value={itemsPerPage}
-            onChange={(e) => onSelectPerPage(parseInt(e.target.value))}
-            className="border border-gray-500 rounded-md p-2"
-          >
-            {[10, 20, 50, 100].map((_, i) =>
-              <option key={i} value={_}>{`${_}` + (locale === 'ja' ? '件' : '')}</option>
-            )}
-          </select>
-        </div>
+       
       </div>
     </div>
   );

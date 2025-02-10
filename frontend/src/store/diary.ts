@@ -26,7 +26,7 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
   diaries: [],
   total: 0,
   current_page: 1,
-  per_page: 10,
+  per_page: 5,
   last_page: 0,
   next_page_url: null,
   prev_page_url: null,

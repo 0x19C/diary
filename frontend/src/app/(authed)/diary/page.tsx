@@ -35,6 +35,10 @@ const Page = () => {
     router.push(`/diary/edit/${diary.id}`)
   }
 
+  const handleShow = (diary: Diary) => {
+    router.push(`/diary/show/${diary.id}`)
+  }
+
   if (!diaries) return <div>loading...</div>;
   return (
     <>
@@ -68,6 +72,7 @@ const Page = () => {
           sort_order=""
           onDelete={handleDelete}
           onEdit={handleEdit}
+          onShow={handleShow}
         />
 
       </section>

@@ -4,7 +4,7 @@ import "./globals.css";
 import { ManagerDashboardHeader } from "@/components/header";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,24 +36,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const {isLoggedIn, actionWhoAmICredential, isAdmin} = useAuthStore();
+  const pathname = usePathname();
+  const {isLoggedIn, actionWhoAmICredential} = useAuthStore();
   useEffect(() => {
-    actionWhoAmICredential().then((res) => {
-      if (res.data) {
-        if (isLoggedIn) {
-          if(isAdmin) {
-            router.push('/users');
-          } else {
-            router.push("/diary");
-          }
-        } else {
-          router.push("/login");
+    actionWhoAmICredential()
+      .then((res) => {
+        if(!res.data.is_admin && pathname.includes('/user')){
+          router.push('/diary')
+        } else if(res.data.is_admin && pathname.includes('/diary')) {
+          router.push('/users')
         }
-      }
-    }).catch(()=> {
-      router.push('/login')
-    })
-    ;
+      })
+      .catch(()=> {
+        router.push('/login')
+      });
   },[isLoggedIn, router])
   return (
     <html lang="en">

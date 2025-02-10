@@ -76,7 +76,7 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = () => {
 
           <div className="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start">
             <Link
-                href={"/diary"}
+                href={""}
                 className="flex-shrink-0 text-gray-200 hover:text-white"
               >
                 <FontAwesomeIcon icon={faBook} size="2xl" />

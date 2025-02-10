@@ -25,7 +25,7 @@ class ProfileController extends Controller
         // Update the user's details
         $user->update($validated);
 
-        return response()->json(['message' => 'Profile updated successfully']);
+        return response()->json(['message' => 'Profile updated successfully', 'data' => $user]);
     }
 
     public function changePassword(Request $request)
@@ -47,6 +47,6 @@ class ProfileController extends Controller
         $user->password = Hash::make($validated['new_password']);
         $user->save();
 
-        return response()->json(['message' => 'Password updated successfully.']);
+        return response()->json(['message' => 'Password updated successfully.', 'data' => $user]);
     }
 }

@@ -1,22 +1,18 @@
 "use client";
 
-import ImageUploadInput from "@/components/input/imageUploadInput";
 import { LoadingOverlay } from "@/components/overlay";
 import { useDiaryStore } from "@/store/diary";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter, usePathname  } from "next/navigation";
+import { usePathname, useRouter  } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-const EditDiaryPage: React.FC = () => {
-  const router = useRouter();
+const ShowDiaryPage: React.FC = () => {
   const pathname = usePathname();
   const diaryId = pathname.split("/").pop();
-
-  const { isLoading, updateDiary, getDiaryById } = useDiaryStore();
+  const router = useRouter();
+  const { isLoading, getDiaryById } = useDiaryStore();
   const [summary, setSummary] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [existingFileUrl, setExistingFileUrl] = useState<string | null>(null);
   useEffect(() => {
@@ -38,31 +34,7 @@ const EditDiaryPage: React.FC = () => {
       fetchDiary();
     }
   }, [diaryId]);
-  const handleDeleteImage = () => {
-    setExistingFileUrl(null);
-    setMessage("Image removed successfully.");
-  };
-  const handleUpdateDiaryButtonClick = () => {
-    if (!diaryId) return;
-    const formData = new FormData();
-    formData.append("summary", summary);
-    if (files.length) {
-      formData.append(`file`, files[0]);
-    }
-
-    updateDiary(diaryId, formData)
-      .then((res) => {
-        setError("");
-        setMessage(res.message);
-        setTimeout(() => {
-          router.push("/diary");
-        }, 1500);
-      })
-      .catch((e) => {
-        setMessage("");
-        setError(e.message);
-      });
-  };
+ 
 
   return (
     <Suspense>
@@ -77,6 +49,7 @@ const EditDiaryPage: React.FC = () => {
                   placeholder=""
                   className="p-2 border border-gray-300 focus:outline-none w-full my-2 min-h-[350px]"
                   value={summary}
+                  readOnly
                   onChange={(e) => setSummary(e.target.value)}
                 />
               </td>
@@ -92,35 +65,29 @@ const EditDiaryPage: React.FC = () => {
                       alt="Existing file"
                       className="w-32 h-20"
                     />
-                    <button
-                      onClick={handleDeleteImage}
-                      className="duration-300 w-8 h-8 border border-gray-default rounded-full my-auto hover:bg-gray-default text-sm text-gray-default hover:text-black-default"
-                    >
-                      <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
+                    
                   </div>
                 )}
-                <ImageUploadInput files={files} onChange={setFiles} />
               </td>
             </tr>
           </tbody>
         </table>
         <div className="text-xs">
           {!!error && <h1 className="text-red-600 my-5">{error}</h1>}
-          {!!message && <h1 className="text-green-default">{message}</h1>}
+        </div>
+        <div className="my-2 w-full">
+          <button
+            className="w-full bg-green-default text-white py-2"
+            onClick={() => router.back()}
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />戻る
+          </button>
         </div>
       </div>
-      <div className="my-2 w-full">
-        <button
-          className="w-full bg-blue-500 text-white py-2"
-          onClick={handleUpdateDiaryButtonClick}
-        >
-          変更を保存
-        </button>
-      </div>
+      
       <LoadingOverlay isOpen={isLoading} />
     </Suspense>
   );
 };
 
-export default EditDiaryPage;
+export default ShowDiaryPage;

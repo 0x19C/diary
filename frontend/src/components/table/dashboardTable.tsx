@@ -2,6 +2,7 @@
 
 import {
   faEdit,
+  faEye,
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from 'reactjs-popup';
@@ -38,6 +39,7 @@ const DashboardTableEntry = ({
   data,
   onEdit,
   onDelete,
+  onShow,
   index
 }: Readonly<{
   data: Diary;
@@ -46,6 +48,7 @@ const DashboardTableEntry = ({
   editable?: boolean;
   onEdit: (data: Diary) => void;
   onDelete: (data: Diary) => void;
+  onShow: (data: Diary) => void;
   index: number;
 }>) => {
 
@@ -61,6 +64,10 @@ const DashboardTableEntry = ({
   const handleDeleteClicked = async() => {
     onDelete(data);
   };
+
+  const handleShowClicked = () => {
+    onShow(data);
+  }
 
   return (
     <tr className="border-t border-gray-default" style={{ background:  'transparent' }}>
@@ -112,6 +119,13 @@ const DashboardTableEntry = ({
         >
           <div className="flex gap-2">
             <button
+              onClick={handleShowClicked}
+              className="text-blue-600 hover:text-blue-800"
+              aria-label="Edit"
+            >
+              <FontAwesomeIcon icon={faEye} />
+            </button>
+            <button
               onClick={handleEditClicked}
               className="text-blue-600 hover:text-blue-800"
               aria-label="Edit"
@@ -140,6 +154,7 @@ const ManagerDashboardTable = ({
   editable = true,
   onEdit,
   onDelete,
+  onShow,
 }: Readonly<{
   editable?: boolean;
   disableClone?: boolean;
@@ -164,12 +179,15 @@ const ManagerDashboardTable = ({
   onSelectPage?: (page: number) => void;
   onSelectPerPage?: (count: number) => void;
   onSortChanged?: (sort_field: string, sort_order: string) => void;
+  onShow: (data: Diary) => void;
 }>) => {
   const handleEdit = (data: Diary) => {
      onEdit?.(data);
   };
 
-
+  const handleShow = (data: Diary) => {
+    onShow(data);
+  }
 
   const handleDelete = (data: Diary) => {
      onDelete?.(data);
@@ -199,6 +217,7 @@ const ManagerDashboardTable = ({
                 editable={editable}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onShow={handleShow}
               />
             ))}
           </tbody>

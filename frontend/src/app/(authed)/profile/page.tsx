@@ -1,6 +1,7 @@
 "use client";
 
-import { changePassword, getProfile, updateProfile } from "@/api/profile";
+import { LoadingOverlay } from "@/components/overlay";
+import { useProfileStore } from "@/store/profile";
 import { useEffect } from "react";
 import { Suspense, useState } from "react";
 
@@ -9,36 +10,44 @@ const Page = () => {
   const [currentPwd, setCurrentPwd] = useState("");
   const [pwd, setPwd] = useState("");
   const [cpwd, setCPwd] = useState("");
+  const [error, setError] = useState("");
+  const { isLoading, actionGetProfile, actionUpdateProfile, actionChangePassword } = useProfileStore();
+  const [message, setMessage] = useState("");
+
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await getProfile();
-        setName(response.name || "");
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    fetchProfile()
+    actionGetProfile()
+      .then((res) => {
+        setError("");
+        setName(res.data.name);
+      })
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {});
   },[])
 
   const handleChangeProfile = async () => {
-    try {
-      const response = await updateProfile(name);
-      setName(response.name);
-    } catch(e) {
-      console.error(e);
-    }
+    actionUpdateProfile(name)
+      .then((res) => {
+        setError('');
+        setMessage(res.message)
+      })
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {})
   }
 
   const handleChangePassword = async () => {
-    try {
-      await changePassword(currentPwd, pwd, cpwd)
-      setPwd("");
-      setCurrentPwd('');
-      setCPwd("")
-    } catch(e) {
-      console.error(e);
-    }
+    actionChangePassword(currentPwd, pwd, cpwd)
+      .then((res)=> {
+        setError('');
+        setMessage(res.message);
+      })
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {})
   }
 
   return (
@@ -103,6 +112,8 @@ const Page = () => {
               </tbody>
             </table>
             <div className="text-xs">
+              {!!error && <h1 className="text-red-600 my-5">{error}</h1>}
+              {!!message && <h1 className="text-green-default">{message}</h1>}
             
             </div>
           </div>
@@ -124,6 +135,7 @@ const Page = () => {
             </button>
           </div>
           </div>
+          <LoadingOverlay isOpen={isLoading} />
         </Suspense>
       </div>
     </div>
