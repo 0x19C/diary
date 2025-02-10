@@ -1,11 +1,9 @@
 "use client"
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ManagerDashboardHeader } from "@/components/header";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,11 +34,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
 
   const { actionWhoAmICredential } = useAuthStore();
   useEffect(() => {
-    console.log("Test")
     actionWhoAmICredential();
     
   },[])

@@ -20,13 +20,10 @@ const EditDiaryPage: React.FC = () => {
   const [error, setError] = useState("");
   const [existingFileUrl, setExistingFileUrl] = useState<string | null>(null);
   useEffect(() => {
-    console.log(diaryId)
     if (diaryId) {
-
       const fetchDiary = async () => {
         try {
           const diary = await getDiaryById(diaryId);
-          console.log(diary,'DDD', diaryId)
           if (diary) {
             setSummary(diary.summary || "");
             if (diary.file_path) {
@@ -48,7 +45,6 @@ const EditDiaryPage: React.FC = () => {
   const handleUpdateDiaryButtonClick = () => {
     if (!diaryId) return;
     const formData = new FormData();
-    console.log(summary,'DD')
     formData.append("summary", summary);
     if (files.length) {
       formData.append(`file`, files[0]);

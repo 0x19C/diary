@@ -48,27 +48,17 @@ const DashboardTableEntry = ({
   onDelete: (data: Diary) => void;
   index: number;
 }>) => {
-  // const { fields } = data;
-  console.log(data,'DATA')
+
   const { current_page, per_page } = useDiaryStore();
-  
   const backendUrl = process.env.NEXT_PUBLIC_INTER_BACKEND_API_URL;
   const fileUrl = `${backendUrl}/storage/${data.file_path}`;
   const handleEditClicked = () => {
-    console.log(data);
     onEdit(data);
   };
 
   
 
   const handleDeleteClicked = async() => {
-    // try {
-    //   const response = await diaryDeleting(data.id);
-    //   console.log(response);
-
-    // } catch (error) {
-    //   console.log(error);
-    // }
     onDelete(data);
   };
 
@@ -176,14 +166,13 @@ const ManagerDashboardTable = ({
   onSortChanged?: (sort_field: string, sort_order: string) => void;
 }>) => {
   const handleEdit = (data: Diary) => {
-    onEdit && onEdit(data);
+     onEdit?.(data);
   };
 
 
 
   const handleDelete = (data: Diary) => {
-    console.log('delete', data)
-    onDelete && onDelete(data);
+     onDelete?.(data);
 
   };
 

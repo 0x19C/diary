@@ -14,7 +14,6 @@ const Page = () => {
       try {
         const response = await getProfile();
         setName(response.name || "");
-        console.log('profile', response)
       } catch (error) {
         console.error(error)
       }
@@ -33,8 +32,7 @@ const Page = () => {
 
   const handleChangePassword = async () => {
     try {
-      const response = await changePassword(currentPwd, pwd, cpwd)
-      console.log(response)
+      await changePassword(currentPwd, pwd, cpwd)
       setPwd("");
       setCurrentPwd('');
       setCPwd("")

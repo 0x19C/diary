@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import clsx from "clsx";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,8 +16,7 @@ interface ManagerHeaderProps {
 }
 
 
-const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
-  const pathname = usePathname();
+const ManagerHeader: React.FC<ManagerHeaderProps> = () => {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -31,8 +29,7 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
     router.push('/login')
   }
 
-  const { actionLogout, isAdmin, isLoggedIn } = useAuthStore();
-  const filteredNavs = navs.filter((nav) => (isAdmin && isLoggedIn ? nav.admin :  isLoggedIn &&!nav.admin))
+  const { actionLogout, isLoggedIn } = useAuthStore();
 
   return (
     <nav className="bg-green-600">

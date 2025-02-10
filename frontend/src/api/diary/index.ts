@@ -73,7 +73,6 @@ export const diaryDetailing = async (id: string) => {
 
 export const diaryUpdating = async (id: string, formData: FormData) => {
   await getCSRFToken();
-  console.log(formData,'DDD')
   return new Promise<Diary>((resolve, reject) => {
     axios
       .post(`/api/diaries/${id}?_method=PATCH`, formData)

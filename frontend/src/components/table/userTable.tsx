@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  faEdit,
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from 'reactjs-popup';
@@ -141,9 +140,7 @@ const UserTable = ({
 
 
   const handleDelete = (data: User) => {
-    console.log('delete', data)
-    onDelete && onDelete(data);
-
+    onDelete?.(data);
   };
 
   return (

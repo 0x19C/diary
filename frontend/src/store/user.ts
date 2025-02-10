@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import * as API from "@/api/users";
 
-import { User, type Diary } from "@/api/common";
+import { User } from "@/api/common";
 
 type IStoreError = { error: string; message: string } | null | undefined;
 

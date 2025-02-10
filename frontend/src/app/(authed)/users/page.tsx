@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useDiaryStore } from "@/store/diary";
 import { DashboardPagination } from "@/components/pagination";
-import ManagerDashboardTable from "@/components/table/dashboardTable";
 import { useRouter } from "next/navigation";
-import { Diary, User } from "@/api/common";
+import { User } from "@/api/common";
 import { useAuthStore } from "@/store/auth";
 import { userStore } from "@/store/user";
 import UserTable from "@/components/table/userTable";
@@ -24,8 +22,6 @@ const Page = () => {
   ]
     const router = useRouter();
   useEffect(() => {
-    
-    console.log(isLoggedIn,'isLoggedIn')
     if(!isLoggedIn) {
       router.push('/login')
     }
