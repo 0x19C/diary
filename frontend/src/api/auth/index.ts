@@ -93,7 +93,6 @@ export const whoAmI = async (headers: AxiosHeaders) => {
             is_admin: boolean;
           };
         }) => {
-          console.log({res})
           resolve({
             data: res.data,
             message: "Successfully Registered!",
@@ -101,7 +100,7 @@ export const whoAmI = async (headers: AxiosHeaders) => {
         }
       )
       .catch((e) => {
-        console.log({e})
+        console.error({e})
         try {
           const { data } = e.response;
           reject(data);

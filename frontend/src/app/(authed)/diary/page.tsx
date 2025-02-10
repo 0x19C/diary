@@ -22,7 +22,6 @@ const Page = () => {
     const router = useRouter();
   useEffect(() => {
     
-    console.log(isLoggedIn,'isLoggedIn')
     if(!isLoggedIn) {
       router.push('/login')
     }

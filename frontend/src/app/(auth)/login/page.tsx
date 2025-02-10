@@ -86,7 +86,7 @@ const Page: React.FC = () => {
           </tbody>
         </table>
         <div className="text-xs">
-          {!!error && <h1 className="text-red-600 my-5">{error}</h1>}
+          {/* {!!error && <h1 className="text-red-600 my-5">{error}</h1>} */}
           {!!message && <h1 className="text-green-default">{message}</h1>}
         </div>
       </div>
