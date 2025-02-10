@@ -10,8 +10,8 @@ import 'reactjs-popup/dist/index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode, useState } from "react";
 import clsx from "clsx";
-import { Diary } from "@/api/common";
-import { useDiaryStore } from "@/store/diary";
+import { User } from "@/api/common";
+import { userStore } from "@/store/user";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -36,39 +36,22 @@ export const EditOption: React.FC<{ children: React.ReactNode }> = ({ children }
 
 const DashboardTableEntry = ({
   data,
-  onEdit,
   onDelete,
   index
 }: Readonly<{
-  data: Diary;
+  data: User;
   disableClone?: boolean;
   disableDelete?: boolean;
   editable?: boolean;
-  onEdit: (data: Diary) => void;
-  onDelete: (data: Diary) => void;
+  onDelete: (data: User) => void;
   index: number;
 }>) => {
-  // const { fields } = data;
-  console.log(data,'DATA')
-  const { current_page, per_page } = useDiaryStore();
+  const { current_page, per_page } = userStore();
   
-  const backendUrl = process.env.NEXT_PUBLIC_INTER_BACKEND_API_URL;
-  const fileUrl = `${backendUrl}/storage/${data.file_path}`;
-  const handleEditClicked = () => {
-    console.log(data);
-    onEdit(data);
-  };
 
   
 
   const handleDeleteClicked = async() => {
-    // try {
-    //   const response = await diaryDeleting(data.id);
-    //   console.log(response);
-
-    // } catch (error) {
-    //   console.log(error);
-    // }
     onDelete(data);
   };
 
@@ -84,50 +67,29 @@ const DashboardTableEntry = ({
           <span>{(index+1) + ((current_page - 1 )* per_page)}</span>
         </td>
         <td
-          key={data.summary}
+          key={data.name}
           className={clsx(
             "p-4 text-sm whitespace-nowrap w-64",
           )}
         >
-          <span>{data.summary}</span>
+          <span>{data.name}</span>
         </td>
         <td
-          key={data.entry_date}
+          key={data.email}
           className={clsx(
-            "p-4 text-sm whitespace-nowrap w-24",
+            "p-4 text-sm whitespace-nowrap w-64",
           )}
         >
-          <span>{data.entry_date}</span>
+          <span>{data.email}</span>
         </td>
-        <td
-          key={data.file_path}
-          className={clsx(
-            "p-4 text-sm whitespace-nowrap w-24",
-          )}
-        >
-          {data.file_path ? (
-            <img 
-              src={fileUrl} 
-              alt="Image" 
-              className="w-32 h-32 object-cover rounded" 
-            />
-          ) : (
-            <span>No Image Available</span>
-          )}
-        </td>
+        
         <td
           className={clsx(
             "p-4 text-sm whitespace-nowrap w-24",
           )}
         >
           <div className="flex gap-2">
-            <button
-              onClick={handleEditClicked}
-              className="text-blue-600 hover:text-blue-800"
-              aria-label="Edit"
-            >
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
+            
             <button
               onClick={handleDeleteClicked}
               className="text-red-600 hover:text-red-800"
@@ -143,12 +105,11 @@ const DashboardTableEntry = ({
   );
 };
 
-const ManagerDashboardTable = ({
+const UserTable = ({
   data,
   disableClone = false,
   disableDelete = false,
   editable = true,
-  onEdit,
   onDelete,
 }: Readonly<{
   editable?: boolean;
@@ -160,7 +121,7 @@ const ManagerDashboardTable = ({
     fill?: boolean;
     sortable?: boolean;
   }[];
-  data: Diary[];
+  data: User[];
   pagination?: {
     total: number;
     current_page: number;
@@ -169,19 +130,17 @@ const ManagerDashboardTable = ({
   sort_field?: string;
   sort_order?: string;
 
-  onEdit?: (data: Diary) => void;
-  onDelete?: (data: Diary) => void;
+  onEdit?: (data: User) => void;
+  onDelete?: (data: User) => void;
   onSelectPage?: (page: number) => void;
   onSelectPerPage?: (count: number) => void;
   onSortChanged?: (sort_field: string, sort_order: string) => void;
 }>) => {
-  const handleEdit = (data: Diary) => {
-    onEdit && onEdit(data);
-  };
+  
 
 
 
-  const handleDelete = (data: Diary) => {
+  const handleDelete = (data: User) => {
     console.log('delete', data)
     onDelete && onDelete(data);
 
@@ -194,9 +153,9 @@ const ManagerDashboardTable = ({
           <thead>
             <tr>
               <th className="p-4 text-left w-[10%]">ID</th>
-              <th className="p-4 text-left w-auto">Summary</th>
-              <th className="p-4 text-left w-[20%]">Entry Date</th>
-              <th className="p-4 text-left w-[20%]">Image</th>
+              <th className="p-4 text-left w-auto">Name</th>
+              <th className="p-4 text-left w-[20%]">Email</th>
+              <th className="p-4 text-left w-[20%]"></th>
             </tr>
           </thead>
           <tbody>
@@ -208,7 +167,6 @@ const ManagerDashboardTable = ({
                 disableClone={disableClone}
                 disableDelete={disableDelete}
                 editable={editable}
-                onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             ))}
@@ -220,4 +178,4 @@ const ManagerDashboardTable = ({
   );
 };
 
-export default ManagerDashboardTable;
+export default UserTable;

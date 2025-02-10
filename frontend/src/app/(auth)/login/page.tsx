@@ -41,7 +41,7 @@ const Page: React.FC = () => {
         .then((res) => {
           setError("");
           setMessage(res.message);
-          if(isAdmin){
+          if(res.data.is_admin){
             router.push("/users");
           }else {
             router.push("/diary");

@@ -26,10 +26,13 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const { isLoggedIn, actionLogout, isAdmin } = useAuthStore();
-  const filteredNavs = isLoggedIn
-  ? navs.filter(nav => isAdmin || !nav.admin)
-  : [];
+  const handleLogoutClick = () => {
+    actionLogout();
+    router.push('/login')
+  }
+
+  const { actionLogout, isAdmin, isLoggedIn } = useAuthStore();
+  const filteredNavs = navs.filter((nav) => (isAdmin && isLoggedIn ? nav.admin :  isLoggedIn &&!nav.admin))
 
   return (
     <nav className="bg-green-600">
@@ -103,19 +106,19 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = ({ navs }) => {
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <Link
+            {isLoggedIn && <Link
               href={"/profile"}
               className="mr-3 p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
             >
               <FontAwesomeIcon icon={faUser} />
-            </Link>
-            <button
+            </Link>}
+            {isLoggedIn&&<button
               className="p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
               title="logout"
-              onClick={() => actionLogout()}
+              onClick={() => handleLogoutClick()}
             >
               <FontAwesomeIcon icon={faRightFromBracket} />
-            </button>
+            </button>}
           </div>
         </div>
       </div>

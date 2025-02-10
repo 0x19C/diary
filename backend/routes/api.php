@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/user', function (Request $request) {
@@ -15,4 +16,5 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('profile', [ProfileController::class, 'show']);
     Route::put('profile', [ProfileController::class, 'update']);
     Route::put('profile/password', [ProfileController::class, 'changePassword']);
+    Route::resource('users', UserController::class);
 });

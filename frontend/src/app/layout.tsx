@@ -5,6 +5,7 @@ import "./globals.css";
 import { ManagerDashboardHeader } from "@/components/header";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,7 @@ const HeaderNavs = [
   },
   {
     label: "User Management",
-    link: "/user",
+    link: "/users",
     admin: true
   },
 ];
@@ -35,11 +36,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const router = useRouter();
 
-  const { isLoggedIn, actionLogout, isAdmin,actionWhoAmICredential } = useAuthStore();
+  const { actionWhoAmICredential } = useAuthStore();
   useEffect(() => {
     actionWhoAmICredential();
-
+    
   },[])
   return (
     <html lang="en">
@@ -47,6 +49,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ManagerDashboardHeader navs={HeaderNavs} />
+
         {children}
       </body>
     </html>
