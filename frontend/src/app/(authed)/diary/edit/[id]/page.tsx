@@ -115,7 +115,7 @@ const EditDiaryPage: React.FC = () => {
           className="w-full bg-blue-500 text-white py-2"
           onClick={handleUpdateDiaryButtonClick}
         >
-          Save Changes
+          変更を保存
         </button>
       </div>
       <LoadingOverlay isOpen={isLoading} />
