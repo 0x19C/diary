@@ -46,7 +46,7 @@ const Page: React.FC = () => {
                 <textarea
                   id="summary"
                   placeholder=""
-                  className="p-2 border border-gray-300 focus:outline-none w-full my-2 min-h-[350px]"
+                  className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
                 />

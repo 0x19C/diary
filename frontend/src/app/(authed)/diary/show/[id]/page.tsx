@@ -49,7 +49,7 @@ const ShowDiaryPage: React.FC = () => {
                 <textarea
                   id="summary"
                   placeholder=""
-                  className="p-2 border border-gray-300 focus:outline-none w-full my-2 min-h-[350px]"
+                  className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                   value={summary}
                   readOnly
                   onChange={(e) => setSummary(e.target.value)}
@@ -82,7 +82,7 @@ const ShowDiaryPage: React.FC = () => {
             className="w-full bg-green-default text-white py-2"
             onClick={() => router.back()}
           >
-            <FontAwesomeIcon icon={faArrowLeft} />
+            <FontAwesomeIcon icon={faArrowLeft} className="mr-3" />
             戻る
           </button>
         </div>

@@ -80,7 +80,7 @@ export const logout = async () => {
 
 export const whoAmI = async () => {
   await getCSRFToken();
-  return new Promise<COMMON_RESPONSE<UserResponseData>>((resolve, reject) => {
+  return new Promise<COMMON_RESPONSE<UserResponseData | null>>((resolve, reject) => {
     axios
       .get("/api/user")
       .then(
@@ -101,7 +101,10 @@ export const whoAmI = async () => {
       .catch((e) => {
         try {
           const { data } = e.response;
-          reject(data);
+          reject({
+            data: null,
+            message: data.message
+          });
         } catch (_) {
           reject(SERVER_ERROR);
         }

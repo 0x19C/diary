@@ -1,21 +1,11 @@
 "use client";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
 import { ManagerDashboardHeader } from "@/components/header";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Skeleton from "@/components/skeleton";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({
   children,
@@ -29,9 +19,9 @@ export default function RootLayout({
     if (isLoggedIn == 0) {
       actionWhoAmICredential()
         .then((res) => {
-          if (!res.data.is_admin && pathname.includes("/user")) {
+          if (!res.data?.is_admin && pathname.includes("/user")) {
             router.push("/diary");
-          } else if (res.data.is_admin && pathname.includes("/diary")) {
+          } else if (res.data?.is_admin && pathname.includes("/diary")) {
             router.push("/users");
           }
         })
@@ -43,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`antialiased`}
       >
         <ManagerDashboardHeader />
         {isLoggedIn == 0 ? <Skeleton /> : children}

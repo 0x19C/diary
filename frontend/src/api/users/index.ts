@@ -1,11 +1,8 @@
 import { axios, SERVER_ERROR, getCSRFToken, type Diary, User } from "@/api/common";
 import { AxiosResponse } from "axios";
 
-
-
 export const userListing = async (page: number = 1, per_page: number = 5) => {
   await getCSRFToken();
-
   return new Promise<{
     data: User[];
     pagination: {
@@ -32,7 +29,6 @@ export const userListing = async (page: number = 1, per_page: number = 5) => {
       });
   });
 };
-
 
 export const userDeleting = async (id: string) => {
   await getCSRFToken();

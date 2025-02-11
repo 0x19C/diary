@@ -18,21 +18,33 @@ const Page: React.FC = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const { isLoading, actionLoginWithCredential } = useAuthStore();
+  const { isLoading, actionLoginWithCredential, actionWhoAmICredential } =
+    useAuthStore();
 
-  const handleLoginButtonClicked = () => {
+  const handleLoginButtonClicked = async () => {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", pwd);
 
-    actionLoginWithCredential(formData)
+    await actionLoginWithCredential(formData)
       .then((res) => {
         setError("");
         setMessage(res.message);
-
-        setTimeout(() => {
+      })
+      .catch((e) => {
+        setMessage("");
+        setError(e.message);
+      })
+      .finally(() => {});
+    await actionWhoAmICredential()
+      .then((res) => {
+        setError("");
+        setMessage(res.message);
+        if (res.data?.is_admin) {
+          router.push("/users");
+        } else {
           router.push("/diary");
-        }, 500);
+        }
       })
       .catch((e) => {
         setMessage("");

@@ -18,7 +18,7 @@ export interface IManagerAuthState {
     formData: FormData
   ): Promise<{ message: string }>;
   actionLogout(): Promise<{ message: string }>;
-  actionWhoAmICredential(): Promise<{message: string, data: UserResponseData }>;
+  actionWhoAmICredential(): Promise<{message: string, data: UserResponseData | null }>;
 }
 
 export const useAuthStore = create<IManagerAuthState>((set) => ({
@@ -87,7 +87,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
       API.whoAmI()
         .then((res) => {
           set({isLoggedIn: 2})
-          set({isAdmin: res.data.is_admin})
+          set({isAdmin: res.data?.is_admin})
           set({isLoading: false})
           resolve({
             message: res.message,

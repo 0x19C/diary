@@ -2,8 +2,11 @@
 
 import { LoadingOverlay } from "@/components/overlay";
 import { useProfileStore } from "@/store/profile";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Suspense, useState } from "react";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Page = () => {
   const [name, setName] = useState("");
@@ -11,13 +14,10 @@ const Page = () => {
   const [pwd, setPwd] = useState("");
   const [cpwd, setCPwd] = useState("");
   const [error, setError] = useState("");
-  const {
-    isLoading,
-    actionGetProfile,
-    actionUpdateProfile,
-    actionChangePassword,
-  } = useProfileStore();
+  const { isLoading, actionGetProfile, actionChangePassword } =
+    useProfileStore();
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     actionGetProfile()
@@ -30,18 +30,6 @@ const Page = () => {
       })
       .finally(() => {});
   }, []);
-
-  const handleChangeProfile = async () => {
-    actionUpdateProfile(name)
-      .then((res) => {
-        setError("");
-        setMessage(res.message);
-      })
-      .catch((e) => {
-        setError(e.message);
-      })
-      .finally(() => {});
-  };
 
   const handleChangePassword = async () => {
     actionChangePassword(currentPwd, pwd, cpwd)
@@ -60,6 +48,7 @@ const Page = () => {
       <div className="border border-green-default p-5 min-w-[500px]">
         <Suspense>
           <div className="my-5">
+            <h1 className="text-2xl font-bold mb-5">パスワードの変更</h1>
             <table className="w-full">
               <tbody>
                 <tr>
@@ -71,6 +60,7 @@ const Page = () => {
                       placeholder=""
                       className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                       value={name}
+                      readOnly
                       onChange={(e) => setName(e.target.value)}
                     />
                   </td>
@@ -125,9 +115,10 @@ const Page = () => {
             <div className="my-2 w-1/2">
               <button
                 className="w-full bg-green-default text-white py-2"
-                onClick={() => handleChangeProfile()}
+                onClick={() => router.back()}
               >
-                変更
+                <FontAwesomeIcon icon={faArrowLeft} className="mr-3" />
+                戻る
               </button>
             </div>
             <div className="my-2 w-1/2">

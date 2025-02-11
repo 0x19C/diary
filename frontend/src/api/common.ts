@@ -10,6 +10,7 @@ export const axios = Axios.create({
 });
 
 export const SERVER_ERROR = {
+  data: null,
   error: "server_error",
   message: "サーバエラー",
 };

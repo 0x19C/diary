@@ -5,11 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBook,
-  faRightFromBracket,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const ManagerHeader = () => {
   const router = useRouter();
@@ -24,7 +21,7 @@ const ManagerHeader = () => {
     router.push("/login");
   };
 
-  const { actionLogout, isLoggedIn } = useAuthStore();
+  const { actionLogout, isLoggedIn, isAdmin } = useAuthStore();
 
   return (
     <nav className="bg-green-600">
@@ -71,10 +68,15 @@ const ManagerHeader = () => {
 
           <div className="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start">
             <Link
-              href={""}
+              href={isAdmin ? "/users" : "/diary"}
               className="flex-shrink-0 text-gray-200 hover:text-white"
             >
-              <FontAwesomeIcon icon={faBook} size="2xl" />
+              <Image
+                src={"/diary_logo4.png"}
+                width={40}
+                height={40}
+                alt="logo"
+              />
             </Link>
           </div>
 

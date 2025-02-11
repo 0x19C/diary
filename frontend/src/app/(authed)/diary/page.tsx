@@ -48,7 +48,7 @@ const Page = () => {
   };
 
   return (
-    <section className="relative p-16 mt-2">
+    <section className="relative container mx-auto mt-16">
       <div className="flex justify-end gap-8">
         <DashboardPagination
           locale="ja"
