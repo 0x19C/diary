@@ -46,8 +46,6 @@ services:
     ports:
       - "${BE_PORT}:${BE_PORT}"
     container_name: diary_backend
-    volumes:
-      - ./backend:/app
     depends_on:
       - db
 
