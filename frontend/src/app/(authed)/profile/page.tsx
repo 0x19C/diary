@@ -11,7 +11,12 @@ const Page = () => {
   const [pwd, setPwd] = useState("");
   const [cpwd, setCPwd] = useState("");
   const [error, setError] = useState("");
-  const { isLoading, actionGetProfile, actionUpdateProfile, actionChangePassword } = useProfileStore();
+  const {
+    isLoading,
+    actionGetProfile,
+    actionUpdateProfile,
+    actionChangePassword,
+  } = useProfileStore();
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -24,34 +29,34 @@ const Page = () => {
         setError(e.message);
       })
       .finally(() => {});
-  },[])
+  }, []);
 
   const handleChangeProfile = async () => {
     actionUpdateProfile(name)
       .then((res) => {
-        setError('');
-        setMessage(res.message)
-      })
-      .catch((e) => {
-        setError(e.message);
-      })
-      .finally(() => {})
-  }
-
-  const handleChangePassword = async () => {
-    actionChangePassword(currentPwd, pwd, cpwd)
-      .then((res)=> {
-        setError('');
+        setError("");
         setMessage(res.message);
       })
       .catch((e) => {
         setError(e.message);
       })
-      .finally(() => {})
-  }
+      .finally(() => {});
+  };
+
+  const handleChangePassword = async () => {
+    actionChangePassword(currentPwd, pwd, cpwd)
+      .then((res) => {
+        setError("");
+        setMessage(res.message);
+      })
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {});
+  };
 
   return (
-    <div className="w-[100vw] h-[100vh] flex items-center justify-center" >
+    <div className="w-[100vw] h-[100vh] flex items-center justify-center">
       <div className="border border-green-default p-5 min-w-[500px]">
         <Suspense>
           <div className="my-5">
@@ -114,33 +119,31 @@ const Page = () => {
             <div className="text-xs">
               {!!error && <h1 className="text-red-600 my-5">{error}</h1>}
               {!!message && <h1 className="text-green-default">{message}</h1>}
-            
             </div>
           </div>
           <div className="flex just-between gap-2">
-          <div className="my-2 w-1/2">
-            <button
-              className="w-full bg-green-default text-white py-2"
-              onClick={() => handleChangeProfile()}
-            >
-              変更
-            </button>
-          </div>
-          <div className="my-2 w-1/2">
-            <button
-              className="w-full bg-green-default text-white py-2"
-              onClick={() => handleChangePassword()}
-            >
-              パスワードの変更
-            </button>
-          </div>
+            <div className="my-2 w-1/2">
+              <button
+                className="w-full bg-green-default text-white py-2"
+                onClick={() => handleChangeProfile()}
+              >
+                変更
+              </button>
+            </div>
+            <div className="my-2 w-1/2">
+              <button
+                className="w-full bg-green-default text-white py-2"
+                onClick={() => handleChangePassword()}
+              >
+                パスワードの変更
+              </button>
+            </div>
           </div>
           <LoadingOverlay isOpen={isLoading} />
         </Suspense>
       </div>
     </div>
-   
-  )
-}
+  );
+};
 
 export default Page;

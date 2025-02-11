@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ManagerDashboardHeader } from "@/components/header";
 import { useAuthStore } from "@/store/auth";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Skeleton from "@/components/skeleton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,20 +17,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-const HeaderNavs = [
-  {
-    label: "Diary",
-    link: "/diary",
-    admin: false,
-  },
-  {
-    label: "User Management",
-    link: "/users",
-    admin: true
-  },
-];
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,28 +24,29 @@ export default function RootLayout({
 }>) {
   const router = useRouter();
   const pathname = usePathname();
-  const {isLoggedIn, actionWhoAmICredential} = useAuthStore();
+  const { isLoggedIn, actionWhoAmICredential } = useAuthStore();
   useEffect(() => {
-    actionWhoAmICredential()
-      .then((res) => {
-        if(!res.data.is_admin && pathname.includes('/user')){
-          router.push('/diary')
-        } else if(res.data.is_admin && pathname.includes('/diary')) {
-          router.push('/users')
-        }
-      })
-      .catch(()=> {
-        router.push('/login')
-      });
-  },[isLoggedIn, router])
+    if (isLoggedIn == 0) {
+      actionWhoAmICredential()
+        .then((res) => {
+          if (!res.data.is_admin && pathname.includes("/user")) {
+            router.push("/diary");
+          } else if (res.data.is_admin && pathname.includes("/diary")) {
+            router.push("/users");
+          }
+        })
+        .catch(() => {
+          router.push("/login");
+        });
+    }
+  }, [isLoggedIn, router, pathname, actionWhoAmICredential]);
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ManagerDashboardHeader navs={HeaderNavs} />
-
-        {children}
+        <ManagerDashboardHeader />
+        {isLoggedIn == 0 ? <Skeleton /> : children}
       </body>
     </html>
   );

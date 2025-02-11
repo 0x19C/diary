@@ -5,7 +5,8 @@ import { LoadingOverlay } from "@/components/overlay";
 import { useDiaryStore } from "@/store/diary";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter, usePathname  } from "next/navigation";
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 const EditDiaryPage: React.FC = () => {
@@ -27,7 +28,9 @@ const EditDiaryPage: React.FC = () => {
           if (diary) {
             setSummary(diary.summary || "");
             if (diary.file_path) {
-              setExistingFileUrl(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/storage/${diary.file_path}`);
+              setExistingFileUrl(
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/storage/${diary.file_path}`
+              );
             }
           }
         } catch (e) {
@@ -83,14 +86,15 @@ const EditDiaryPage: React.FC = () => {
             </tr>
             <tr>
               <td>画像</td>
-              
+
               <td>
-              {existingFileUrl && (
+                {existingFileUrl && (
                   <div className="my-2 flex justify-between">
-                    <img
+                    <Image
                       src={existingFileUrl}
                       alt="Existing file"
-                      className="w-32 h-20"
+                      height={200}
+                      width={200}
                     />
                     <button
                       onClick={handleDeleteImage}

@@ -11,12 +11,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
-interface ManagerHeaderProps {
-  navs: { label: string; link: string, admin: boolean }[];
-}
-
-
-const ManagerHeader: React.FC<ManagerHeaderProps> = () => {
+const ManagerHeader = () => {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -26,14 +21,14 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = () => {
 
   const handleLogoutClick = () => {
     actionLogout();
-    router.push('/login')
-  }
+    router.push("/login");
+  };
 
   const { actionLogout, isLoggedIn } = useAuthStore();
 
   return (
     <nav className="bg-green-600">
-      <div className="mx-auto px-2 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
@@ -76,27 +71,31 @@ const ManagerHeader: React.FC<ManagerHeaderProps> = () => {
 
           <div className="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start">
             <Link
-                href={""}
-                className="flex-shrink-0 text-gray-200 hover:text-white"
-              >
-                <FontAwesomeIcon icon={faBook} size="2xl" />
+              href={""}
+              className="flex-shrink-0 text-gray-200 hover:text-white"
+            >
+              <FontAwesomeIcon icon={faBook} size="2xl" />
             </Link>
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {isLoggedIn && <Link
-              href={"/profile"}
-              className="mr-3 p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
-            >
-              <FontAwesomeIcon icon={faUser} />
-            </Link>}
-            {isLoggedIn&&<button
-              className="p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
-              title="logout"
-              onClick={() => handleLogoutClick()}
-            >
-              <FontAwesomeIcon icon={faRightFromBracket} />
-            </button>}
+            {isLoggedIn == 2 && (
+              <Link
+                href={"/profile"}
+                className="mr-3 p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
+              >
+                <FontAwesomeIcon icon={faUser} />
+              </Link>
+            )}
+            {isLoggedIn == 2 && (
+              <button
+                className="p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
+                title="logout"
+                onClick={() => handleLogoutClick()}
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -2,6 +2,12 @@
 
 import { LoadingOverlay } from "@/components/overlay";
 import { useAuthStore } from "@/store/auth";
+import {
+  faArrowRight,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 
@@ -106,9 +112,15 @@ const Page: React.FC = () => {
           className="w-full bg-green-default text-white py-2"
           onClick={handleRegisterButtonClicked}
         >
-          登録
+          登録 <FontAwesomeIcon icon={faRightToBracket} />
         </button>
       </div>
+      <Link
+        href={"/login"}
+        className="text-center block text-green-default mt-5"
+      >
+        ログインページへ <FontAwesomeIcon icon={faArrowRight} />
+      </Link>
       <LoadingOverlay isOpen={isLoading} />
     </Suspense>
   );

@@ -13,6 +13,7 @@ import React, { ReactNode, useState } from "react";
 import clsx from "clsx";
 import { Diary } from "@/api/common";
 import { useDiaryStore } from "@/store/diary";
+import Image from "next/image";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -103,10 +104,12 @@ const DashboardTableEntry = ({
           )}
         >
           {data.file_path ? (
-            <img 
+            <Image
               src={fileUrl} 
               alt="Image" 
-              className="w-32 h-32 object-cover rounded" 
+              height={120}
+              width={80}
+              className="object-cover rounded" 
             />
           ) : (
             <span></span>
@@ -120,14 +123,14 @@ const DashboardTableEntry = ({
           <div className="flex gap-2">
             <button
               onClick={handleShowClicked}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-green-600 hover:text-green-800"
               aria-label="Edit"
             >
               <FontAwesomeIcon icon={faEye} />
             </button>
             <button
               onClick={handleEditClicked}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-green-600 hover:text-green-800"
               aria-label="Edit"
             >
               <FontAwesomeIcon icon={faEdit} />

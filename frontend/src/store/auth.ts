@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import * as API from "@/api/auth";
-import { AxiosHeaders } from "axios";
 
 type IStoreError = { error: string; message: string } | null | undefined;
 interface UserResponseData {
@@ -11,7 +10,7 @@ interface UserResponseData {
 }
 export interface IManagerAuthState {
   isLoading: boolean;
-  isLoggedIn: boolean;
+  isLoggedIn: number;
   isAdmin:boolean;
   error: IStoreError;
   actionLoginWithCredential(formData: FormData): Promise<{ message: string }>;
@@ -24,7 +23,7 @@ export interface IManagerAuthState {
 
 export const useAuthStore = create<IManagerAuthState>((set) => ({
   isLoading: false,
-  isLoggedIn: false,
+  isLoggedIn: 0,
   error: null,
   isAdmin: false,
   actionLoginWithCredential: async (formData: FormData) =>
@@ -33,7 +32,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
       API.loginWithCredential(formData)
         .then((res) => {
           set({
-            isLoggedIn: true,
+            isLoggedIn: 2,
           });
           
           resolve({
@@ -54,7 +53,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
       API.registerWithCredential(formData)
         .then((res) => {
           set({
-            isLoggedIn: true,
+            isLoggedIn: 2,
           });
           resolve(res);
         })
@@ -71,7 +70,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
       API.logout()
         .then((res) => {
           set({
-            isLoggedIn: false,
+            isLoggedIn: 1,
           });
           resolve(res);
         })
@@ -85,11 +84,9 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
   actionWhoAmICredential: async () => 
     new Promise((resolve, reject) => {
       set({ isLoading: true });
-      const headers = new AxiosHeaders();
-      headers.set("Content-Type", "multipart/form-data");
-      API.whoAmI(headers)
+      API.whoAmI()
         .then((res) => {
-          set({isLoggedIn: true})
+          set({isLoggedIn: 2})
           set({isAdmin: res.data.is_admin})
           set({isLoading: false})
           resolve({
@@ -99,7 +96,7 @@ export const useAuthStore = create<IManagerAuthState>((set) => ({
         })
         .catch((e) => {
           reject(e);
-          set({isLoggedIn: false})
+          set({isLoggedIn: 1})
           set({isLoading: false})
 
         })

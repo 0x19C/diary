@@ -7,7 +7,7 @@ const Pagination = ({
   itemsPerPage = 5,
   onSelectPage,
 }: Readonly<{
-  locale: 'en' | 'ja';
+  locale: "en" | "ja";
   totalCount: number;
   currentPage: number;
   itemsPerPage: number;
@@ -52,9 +52,9 @@ const Pagination = ({
   };
 
   const getTotalLabel = () => {
-    if (locale === 'ja') return `全${totalCount}件`;
-    return `Total: ${totalCount}`
-  }
+    if (locale === "ja") return `全 ${totalCount}件`;
+    return `Total: ${totalCount}`;
+  };
 
   return (
     <div className="py-3 flex flex-wrap items-center justify-between text-sm">
@@ -68,19 +68,17 @@ const Pagination = ({
             className="disabled:text-gray-500 disabled:bg-transparent duration-300 rounded-md text-green-default mx-2 hover:bg-gray-200 px-2"
             onClick={() => onSelectPage(currentPage - 1)}
           >
-            {locale === 'ja' ? '前へ' : 'Prev'}
+            {locale === "ja" ? "前へ" : "Prev"}
           </button>
           {displayedPages().map((_, i) => (
             <button
               key={i}
-              className={
-                clsx(
-                  'duration-300 w-[40px] h-[40px] mx-2 rounded-md hover:bg-orange-dark text-black',
-                  {
-                    'bg-orange-default text-white': _ === currentPage
-                  }
-                )
-              }
+              className={clsx(
+                "duration-300 w-[40px] h-[40px] mx-2 rounded-md hover:bg-green-700 text-black",
+                {
+                  "bg-green-default text-white": _ === currentPage,
+                }
+              )}
               onClick={() => _ && onSelectPage(_)}
             >
               <span>{`${_ === null ? "..." : _}`}</span>
@@ -91,10 +89,9 @@ const Pagination = ({
             className="disabled:text-gray-500 disabled:bg-transparent duration-300 rounded-md text-green-default mx-2 hover:bg-gray-200 px-2"
             onClick={() => onSelectPage(currentPage + 1)}
           >
-            {locale === 'ja' ? '次へ' : 'Next'}
+            {locale === "ja" ? "次へ" : "Next"}
           </button>
         </div>
-       
       </div>
     </div>
   );

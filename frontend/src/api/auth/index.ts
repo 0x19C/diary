@@ -4,13 +4,14 @@ import {
   getCSRFToken,
   type COMMON_RESPONSE,
 } from "@/api/common";
-import { AxiosHeaders } from "axios";
+
 interface UserResponseData {
   id: string;
   username: string;
   email: string;
   is_admin: boolean;
 }
+
 export const loginWithCredential = async (formData: FormData) => {
   await getCSRFToken();
   return new Promise<COMMON_RESPONSE<unknown>>((resolve, reject) => {
@@ -77,13 +78,11 @@ export const logout = async () => {
   });
 };
 
-export const whoAmI = async (headers: AxiosHeaders) => {
+export const whoAmI = async () => {
   await getCSRFToken();
   return new Promise<COMMON_RESPONSE<UserResponseData>>((resolve, reject) => {
     axios
-      .get("/api/user", {
-        headers
-      })
+      .get("/api/user")
       .then(
         (res: {
           data: {
@@ -100,7 +99,6 @@ export const whoAmI = async (headers: AxiosHeaders) => {
         }
       )
       .catch((e) => {
-        
         try {
           const { data } = e.response;
           reject(data);

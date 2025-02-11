@@ -2,7 +2,10 @@
 
 import { LoadingOverlay } from "@/components/overlay";
 import { useAuthStore } from "@/store/auth";
-import { faArrowRight, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,7 +18,7 @@ const Page: React.FC = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const { isLoading, actionLoginWithCredential, actionWhoAmICredential } = useAuthStore();
+  const { isLoading, actionLoginWithCredential } = useAuthStore();
 
   const handleLoginButtonClicked = () => {
     const formData = new FormData();
@@ -28,7 +31,7 @@ const Page: React.FC = () => {
         setMessage(res.message);
 
         setTimeout(() => {
-          // router.push("/diary");
+          router.push("/diary");
         }, 500);
       })
       .catch((e) => {
@@ -36,21 +39,6 @@ const Page: React.FC = () => {
         setError(e.message);
       })
       .finally(() => {});
-      actionWhoAmICredential()
-        .then((res) => {
-          setError("");
-          setMessage(res.message);
-          if(res.data.is_admin){
-            router.push("/users");
-          }else {
-            router.push("/diary");
-          }
-        })
-        .catch((e) => {
-          setMessage("");
-          setError(e.message);
-        })
-        .finally(() => {})
   };
   return (
     <Suspense>
@@ -98,7 +86,10 @@ const Page: React.FC = () => {
           ログイン <FontAwesomeIcon icon={faRightToBracket} />
         </button>
       </div>
-      <Link href={"/register"} className="text-center block text-green-default mt-5">
+      <Link
+        href={"/register"}
+        className="text-center block text-green-default mt-5"
+      >
         登録ページへ <FontAwesomeIcon icon={faArrowRight} />
       </Link>
       <LoadingOverlay isOpen={isLoading} />

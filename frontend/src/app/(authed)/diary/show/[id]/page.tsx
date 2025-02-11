@@ -4,7 +4,8 @@ import { LoadingOverlay } from "@/components/overlay";
 import { useDiaryStore } from "@/store/diary";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { usePathname, useRouter  } from "next/navigation";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 const ShowDiaryPage: React.FC = () => {
@@ -23,7 +24,9 @@ const ShowDiaryPage: React.FC = () => {
           if (diary) {
             setSummary(diary.summary || "");
             if (diary.file_path) {
-              setExistingFileUrl(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/storage/${diary.file_path}`);
+              setExistingFileUrl(
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/storage/${diary.file_path}`
+              );
             }
           }
         } catch (e) {
@@ -34,7 +37,6 @@ const ShowDiaryPage: React.FC = () => {
       fetchDiary();
     }
   }, [diaryId]);
- 
 
   return (
     <Suspense>
@@ -56,16 +58,16 @@ const ShowDiaryPage: React.FC = () => {
             </tr>
             <tr>
               <td>画像</td>
-              
+
               <td>
-              {existingFileUrl && (
+                {existingFileUrl && (
                   <div className="my-2 flex justify-between">
-                    <img
+                    <Image
                       src={existingFileUrl}
                       alt="Existing file"
-                      className="w-32 h-20"
+                      height={200}
+                      width={200}
                     />
-                    
                   </div>
                 )}
               </td>
@@ -80,11 +82,12 @@ const ShowDiaryPage: React.FC = () => {
             className="w-full bg-green-default text-white py-2"
             onClick={() => router.back()}
           >
-            <FontAwesomeIcon icon={faArrowLeft} />戻る
+            <FontAwesomeIcon icon={faArrowLeft} />
+            戻る
           </button>
         </div>
       </div>
-      
+
       <LoadingOverlay isOpen={isLoading} />
     </Suspense>
   );

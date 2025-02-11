@@ -10,7 +10,6 @@ interface UserResponseData {
 }
 export interface IProfileState {
   isLoading: boolean;
-  isLoggedIn: boolean;
   isAdmin:boolean;
   error: IStoreError;
   actionGetProfile(): Promise<{ message: string, data: UserResponseData }>;
@@ -20,7 +19,6 @@ export interface IProfileState {
 
 export const useProfileStore = create<IProfileState>((set) => ({
   isLoading: false,
-  isLoggedIn: false,
   error: null,
   isAdmin: false,
   actionGetProfile: async () =>
@@ -28,10 +26,6 @@ export const useProfileStore = create<IProfileState>((set) => ({
       set({ isLoading: true });
       API.getProfile()
         .then((res) => {
-          set({
-            isLoggedIn: true,
-          });
-
           resolve({
             data: res.data,
             message: res.message,
