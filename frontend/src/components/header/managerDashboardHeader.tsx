@@ -81,10 +81,11 @@ const ManagerHeader = () => {
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {isLoggedIn == 2 && (
+            {isLoggedIn == 2 && !isAdmin && (
               <Link
                 href={"/profile"}
                 className="mr-3 p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
+                title="プロフィール"
               >
                 <FontAwesomeIcon icon={faUser} />
               </Link>
@@ -92,7 +93,7 @@ const ManagerHeader = () => {
             {isLoggedIn == 2 && (
               <button
                 className="p-2 rounded text-gray-300 hover:bg-green-500 hover:text-white"
-                title="logout"
+                title="ログアウト"
                 onClick={() => handleLogoutClick()}
               >
                 <FontAwesomeIcon icon={faRightFromBracket} />

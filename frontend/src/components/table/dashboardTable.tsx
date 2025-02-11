@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { Diary } from "@/api/common";
 import { useDiaryStore } from "@/store/diary";
 import Image from "next/image";
+import DeleteConfirmModal from "../modal/confirmButton";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -58,9 +59,7 @@ const DashboardTableEntry = ({
   const fileUrl = `${backendUrl}/storage/${data.file_path}`;
   const handleEditClicked = () => {
     onEdit(data);
-  };
-
-  
+  }; 
 
   const handleDeleteClicked = async() => {
     onDelete(data);
@@ -124,28 +123,30 @@ const DashboardTableEntry = ({
             <button
               onClick={handleShowClicked}
               className="text-green-600 hover:text-green-800"
-              aria-label="Edit"
+              aria-label="詳細"
+              title="詳細"
             >
               <FontAwesomeIcon icon={faEye} />
             </button>
             <button
               onClick={handleEditClicked}
               className="text-green-600 hover:text-green-800"
-              aria-label="Edit"
+              aria-label="編集"
+              title="編集"
             >
               <FontAwesomeIcon icon={faEdit} />
             </button>
             <button
               onClick={handleDeleteClicked}
               className="text-red-600 hover:text-red-800"
-              aria-label="Delete"
+              aria-label="削除"
+              title="削除"
             >
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
           </div>
-          
-        </td>
-      
+
+        </td>      
     </tr>
   );
 };
@@ -184,6 +185,8 @@ const ManagerDashboardTable = ({
   onSortChanged?: (sort_field: string, sort_order: string) => void;
   onShow: (data: Diary) => void;
 }>) => {
+  const [confirm, setConfirm] = useState<Diary>();
+  
   const handleEdit = (data: Diary) => {
      onEdit?.(data);
   };
@@ -202,7 +205,7 @@ const ManagerDashboardTable = ({
       <div className="text-black-default rounded-lg border border-gray-default max-w-full overflow-x-auto">
         <table className="min-w-full table-fixed">
           <thead>
-            <tr>
+            <tr className="border-b">
               <th className="p-4 text-left w-[10%]">番号</th>
               <th className="p-4 text-left w-auto">内容</th>
               <th className="p-4 text-left w-[20%]">作成日</th>
@@ -210,7 +213,7 @@ const ManagerDashboardTable = ({
             </tr>
           </thead>
           <tbody>
-            {data.map((_r, i) => (
+            {(data && data.length > 0) ? data.map((_r, i) => (
               <DashboardTableEntry
                 key={i}
                 data={_r}
@@ -219,14 +222,19 @@ const ManagerDashboardTable = ({
                 disableDelete={disableDelete}
                 editable={editable}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
+                onDelete={() => setConfirm(_r)}
                 onShow={handleShow}
               />
-            ))}
+            )): <tr><td colSpan={4} className="text-center text-xl p-3">表示する日記データが存在しません。</td></tr>}
           </tbody>
         </table>
       </div>
-      
+      {confirm && <DeleteConfirmModal
+        title="削除"
+        description="削除しますか？"
+        onClose={() => setConfirm(undefined)}
+        onConfirm={() => handleDelete(confirm)} />
+      }
     </div>
   );
 };
