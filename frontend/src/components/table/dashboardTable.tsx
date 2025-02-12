@@ -197,7 +197,6 @@ const ManagerDashboardTable = ({
 
   const handleDelete = (data: Diary) => {
      onDelete?.(data);
-
   };
 
   return (

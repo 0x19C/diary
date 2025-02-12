@@ -1,16 +1,15 @@
 "use client";
 
-import {
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode, useState } from "react";
 import clsx from "clsx";
 import { User } from "@/api/common";
 import { userStore } from "@/store/user";
+import DeleteConfirmModal from "../modal/confirmButton";
 
 export type IDataEntry = {
   fields: { width?: string; fill?: boolean; value: ReactNode | string }[];
@@ -18,7 +17,9 @@ export type IDataEntry = {
   id: number;
 };
 
-export const EditOption: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const EditOption: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   return (
     <Popup
@@ -30,13 +31,13 @@ export const EditOption: React.FC<{ children: React.ReactNode }> = ({ children }
     >
       {children}
     </Popup>
-  )
-}
+  );
+};
 
 const DashboardTableEntry = ({
   data,
   onDelete,
-  index
+  index,
 }: Readonly<{
   data: User;
   disableClone?: boolean;
@@ -46,49 +47,40 @@ const DashboardTableEntry = ({
   index: number;
 }>) => {
   const { current_page, per_page } = userStore();
-  
 
-  
-
-  const handleDeleteClicked = async() => {
+  const handleDeleteClicked = async () => {
     onDelete(data);
   };
 
   return (
-    <tr className="border-t border-gray-default" style={{ background:  'transparent' }}>
-      
-        <td
-          key={data.id}
-          className={clsx(
-            "p-4 text-sm whitespace-nowrap w-24",
-          )}
-        >
-          <span>{(index+1) + ((current_page - 1 )* per_page)}</span>
-        </td>
-        <td
-          key={data.name}
-          className={clsx(
-            "p-4 text-sm whitespace-nowrap w-64",
-          )}
-        >
-          <span>{data.name}</span>
-        </td>
-        <td
-          key={data.email}
-          className={clsx(
-            "p-4 text-sm whitespace-nowrap w-64",
-          )}
-        >
-          <span>{data.email}</span>
-        </td>
-        
-        <td
-          className={clsx(
-            "p-4 text-sm whitespace-nowrap w-24",
-          )}
-        >
+    <tr
+      className="border-t border-gray-default"
+      style={{ background: "transparent" }}
+    >
+      <td key={data.id} className={clsx("p-4 text-sm whitespace-nowrap w-24")}>
+        <span>{index + 1 + (current_page - 1) * per_page}</span>
+      </td>
+      <td
+        key={data.name}
+        className={clsx("p-4 text-sm whitespace-nowrap w-64")}
+      >
+        <span>{data.name}</span>
+      </td>
+      <td
+        key={data.email}
+        className={clsx("p-4 text-sm whitespace-nowrap w-64")}
+      >
+        <span>{data.email}</span>
+      </td>
+      <td
+        key={data.created_at}
+        className={clsx("p-4 text-sm whitespace-nowrap w-64")}
+      >
+        <span>{new Date(data.created_at).toLocaleDateString()}</span>
+      </td>
+      {!data.is_admin && (
+        <td className={clsx("p-4 text-sm whitespace-nowrap w-24")}>
           <div className="flex gap-2">
-            
             <button
               onClick={handleDeleteClicked}
               className="text-red-600 hover:text-red-800"
@@ -97,9 +89,8 @@ const DashboardTableEntry = ({
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
           </div>
-          
         </td>
-      
+      )}
     </tr>
   );
 };
@@ -135,10 +126,7 @@ const UserTable = ({
   onSelectPerPage?: (count: number) => void;
   onSortChanged?: (sort_field: string, sort_order: string) => void;
 }>) => {
-  
-
-
-
+  const [confirm, setConfirm] = useState<User>();
   const handleDelete = (data: User) => {
     onDelete?.(data);
   };
@@ -150,8 +138,9 @@ const UserTable = ({
           <thead>
             <tr>
               <th className="p-4 text-left w-[10%]">番号</th>
-              <th className="p-4 text-left w-auto">名前</th>
-              <th className="p-4 text-left w-[20%]">メール</th>
+              <th className="p-4 text-left w-auto">お名前</th>
+              <th className="p-4 text-left w-[20%]">メールアドレス</th>
+              <th className="p-4 text-left w-[20%]">作成日</th>
               <th className="p-4 text-left w-[20%]"></th>
             </tr>
           </thead>
@@ -164,13 +153,20 @@ const UserTable = ({
                 disableClone={disableClone}
                 disableDelete={disableDelete}
                 editable={editable}
-                onDelete={handleDelete}
+                onDelete={() => setConfirm(_r)}
               />
             ))}
           </tbody>
         </table>
+        {confirm && (
+          <DeleteConfirmModal
+            title="削除"
+            description="削除しますか？"
+            onClose={() => setConfirm(undefined)}
+            onConfirm={() => handleDelete(confirm)}
+          />
+        )}
       </div>
-      
     </div>
   );
 };

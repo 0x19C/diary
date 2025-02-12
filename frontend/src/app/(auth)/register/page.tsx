@@ -23,6 +23,40 @@ const Page: React.FC = () => {
   const { isLoading, actionRegisterWithCredential } = useAuthStore();
 
   const handleRegisterButtonClicked = () => {
+    if (!name) {
+      setError("「お名前」項目を入力してください。");
+      return;
+    }
+    if (!email) {
+      setError("「メールアドレス」項目を入力してください。");
+      return;
+    }
+    if (!pwd) {
+      setError("「パスワード」項目を入力してください。");
+      return;
+    }
+    if (pwd.length < 8) {
+      setError(
+        "「パスワード」項目には半角英数字8文字以上を入力してください。"
+      );
+      return;
+    }
+    if (!cpwd) {
+      setError("「スワードの確認」項目を入力してください。");
+      return;
+    }
+    if (cpwd.length < 8) {
+      setError(
+        "「スワードの確認」項目には半角英数字8文字以上を入力してください。"
+      );
+      return;
+    }
+    if (pwd !== cpwd) {
+      setError(
+        "「スワード」項目と「スワードの確認」項目には同じパスワードを入力してください。"
+      );
+      return;
+    }
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
@@ -49,7 +83,7 @@ const Page: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>名前</td>
+              <td>お名前</td>
               <td>
                 <input
                   id="name"
@@ -62,7 +96,7 @@ const Page: React.FC = () => {
               </td>
             </tr>
             <tr>
-              <td>メール</td>
+              <td>メールアドレス</td>
               <td>
                 <input
                   id="email"

@@ -44,4 +44,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  is_admin: number;
+  created_at: string;
+  updated_at: string;
 }

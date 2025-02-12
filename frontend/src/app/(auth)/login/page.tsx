@@ -22,6 +22,20 @@ const Page: React.FC = () => {
     useAuthStore();
 
   const handleLoginButtonClicked = async () => {
+    if (!email) {
+      setError("「メールアドレス」項目を入力してください。");
+      return;
+    }
+    if (!pwd) {
+      setError("「パスワード」項目を入力してください。");
+      return;
+    }
+    if (pwd.length < 8) {
+      setError(
+        "「パスワード」項目には半角英数字8文字以上を入力してください。"
+      );
+      return;
+    }
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", pwd);
@@ -31,9 +45,9 @@ const Page: React.FC = () => {
         setError("");
         setMessage(res.message);
       })
-      .catch((e) => {
+      .catch((_) => {
         setMessage("");
-        setError(e.message);
+        setError("「メールアドレス」もしくは「パスワード」が間違っています。");
       })
       .finally(() => {});
     await actionWhoAmICredential()
@@ -58,7 +72,7 @@ const Page: React.FC = () => {
         <table className="w-full">
           <tbody>
             <tr>
-              <td>メール</td>
+              <td>メールアドレス</td>
               <td>
                 <input
                   id="email"
@@ -66,7 +80,11 @@ const Page: React.FC = () => {
                   placeholder=""
                   className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setError("");
+                    setMessage("");
+                    setEmail(e.target.value);
+                  }}
                 />
               </td>
             </tr>
@@ -79,7 +97,11 @@ const Page: React.FC = () => {
                   placeholder=""
                   className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                   value={pwd}
-                  onChange={(e) => setPwd(e.target.value)}
+                  onChange={(e) => {
+                    setError("");
+                    setMessage("");
+                    setPwd(e.target.value);
+                  }}
                 />
               </td>
             </tr>

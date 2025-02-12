@@ -32,6 +32,42 @@ const Page = () => {
   }, []);
 
   const handleChangePassword = async () => {
+    if (!currentPwd) {
+      setError("「現在のパスワード」項目を入力してください。");
+      return;
+    }
+    if (currentPwd.length < 8) {
+      setError(
+        "「現在のパスワード」項目には半角英数字8文字以上を入力してください。"
+      );
+      return;
+    }
+    if (!pwd) {
+      setError("「新パスワード」項目を入力してください。");
+      return;
+    }
+    if (pwd.length < 8) {
+      setError(
+        "「新パスワード」項目には半角英数字8文字以上を入力してください。"
+      );
+      return;
+    }
+    if (!cpwd) {
+      setError("「新パスワードの確認」項目を入力してください。");
+      return;
+    }
+    if (cpwd.length < 8) {
+      setError(
+        "「新パスワードの確認」項目には半角英数字8文字以上を入力してください。"
+      );
+      return;
+    }
+    if (pwd !== cpwd) {
+      setError(
+        "「新パスワード」項目と「新パスワードの確認」項目には同じパスワードを入力してください。"
+      );
+      return;
+    }
     actionChangePassword(currentPwd, pwd, cpwd)
       .then((res) => {
         setError("");
@@ -74,7 +110,11 @@ const Page = () => {
                       placeholder=""
                       className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                       value={currentPwd}
-                      onChange={(e) => setCurrentPwd(e.target.value)}
+                      onChange={(e) => {
+                        setError("");
+                        setMessage("");
+                        setCurrentPwd(e.target.value);
+                      }}
                     />
                   </td>
                 </tr>
@@ -87,7 +127,11 @@ const Page = () => {
                       placeholder=""
                       className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                       value={pwd}
-                      onChange={(e) => setPwd(e.target.value)}
+                      onChange={(e) => {
+                        setError("");
+                        setMessage("");
+                        setPwd(e.target.value);
+                      }}
                     />
                   </td>
                 </tr>
@@ -100,7 +144,11 @@ const Page = () => {
                       placeholder=""
                       className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                       value={cpwd}
-                      onChange={(e) => setCPwd(e.target.value)}
+                      onChange={(e) => {
+                        setError("");
+                        setMessage("");
+                        setCPwd(e.target.value);
+                      }}
                     />
                   </td>
                 </tr>

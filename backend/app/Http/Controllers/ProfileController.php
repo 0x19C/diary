@@ -40,13 +40,13 @@ class ProfileController extends Controller
 
         // Check if the current password matches the stored password
         if (!Hash::check($validated['current_password'], $user->password)) {
-            return response()->json(['error' => 'Current password is incorrect.'], 400);
+            return response()->json(['message' => '「現在のパスワードが」が間違いです。'], 400);
         }
 
         // Update the user's password
         $user->password = Hash::make($validated['new_password']);
         $user->save();
 
-        return response()->json(['message' => 'Password updated successfully.', 'data' => $user]);
+        return response()->json(['message' => 'パスワードが更新されました。', 'data' => $user]);
     }
 }
