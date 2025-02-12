@@ -140,7 +140,7 @@ const UserTable = ({
               <th className="p-4 text-left w-[10%]">番号</th>
               <th className="p-4 text-left w-auto">お名前</th>
               <th className="p-4 text-left w-[20%]">メールアドレス</th>
-              <th className="p-4 text-left w-[20%]">作成日</th>
+              <th className="p-4 text-left w-[20%]">登録日付</th>
               <th className="p-4 text-left w-[20%]"></th>
             </tr>
           </thead>
