@@ -16,7 +16,7 @@ class DiaryController extends Controller
     {
         $countPerPage = $request->get('per_page', 5);
 
-        $diaries = Diary::where('user_id', auth()->id())->paginate($countPerPage);  // Only show diaries for the authenticated user
+        $diaries = Diary::where('user_id', auth()->id())->orderBy('created_at', 'DESC')->paginate($countPerPage);  // Only show diaries for the authenticated user
 
         // Return the paginated data as JSON
         return response()->json([

@@ -30,7 +30,7 @@ const ShowDiaryPage: React.FC = () => {
             }
           }
         } catch (e) {
-          setError("Failed to load diary details.");
+          setError("日記データのロードが失敗しました。");
           console.error(e);
         }
       };

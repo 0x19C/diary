@@ -40,7 +40,7 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
       set((state) => ({
         diaries: [...state.diaries, res],
       }));
-      return { message: "Successfully Created!" };
+      return { message: "日記データが作成されました。" };
     } catch (error) {
       return Promise.reject(error);
     } finally {
@@ -62,7 +62,7 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
         next_page_url: res.pagination.next_page_url,
         prev_page_url: res.pagination.prev_page_url,
       });
-      return { message: "Successfully Listed!" };
+      return { message: "日記データがロードされました。" };
     } catch (error) {
       return Promise.reject(error);
     } finally {
@@ -78,7 +78,7 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
       set((state) => ({
         diaries: state.diaries.filter((diary) => diary.id !== id),
       }));
-      return { message: "Successfully Deleted!" };
+      return { message: "日記データが削除されました。" };
     } catch (error) {
       return Promise.reject(error);
     } finally {
@@ -96,7 +96,7 @@ export const useDiaryStore = create<IDiaryStore>((set) => ({
           diary.id === id ? res : diary
         ),
       }));
-      return { message: "Successfully Updated!" };
+      return { message: "日記データが更新されました。" };
     } catch (error) {
       return Promise.reject(error);
     } finally {

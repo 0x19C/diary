@@ -15,6 +15,14 @@ const Page: React.FC = () => {
 
   const { isLoading, createDiary } = useDiaryStore();
   const handleCreateDiaryButtonClick = () => {
+    if (!summary) {
+      setMessage("「内容」項目を入力してください。");
+      return;
+    }
+    if (summary.length > 255) {
+      setMessage("「内容」項目に入力できる最大長さは｛255｝文字です。");
+      return;
+    }
     const formData = new FormData();
     formData.append("summary", summary);
     if (files.length) {
@@ -48,14 +56,23 @@ const Page: React.FC = () => {
                   placeholder=""
                   className="p-2 border border-gray-300 focus:outline-none w-full my-2"
                   value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
+                  onChange={(e) => {
+                    setMessage("");
+                    setSummary(e.target.value);
+                  }}
                 />
               </td>
             </tr>
             <tr>
               <td>画像</td>
               <td>
-                <ImageUploadInput files={files} onChange={setFiles} />
+                <ImageUploadInput
+                  files={files}
+                  onChange={(f) => {
+                    setMessage("");
+                    setFiles(f);
+                  }}
+                />
               </td>
             </tr>
           </tbody>
